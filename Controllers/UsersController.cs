@@ -11,7 +11,7 @@ namespace ducky_api_server.Controllers
         [HttpGet]
         public object Get()
         {
-            var user =new UsersRepo().Query();
+            var user =new UsersRepo().GetUser();
             return user;
         }
     }
