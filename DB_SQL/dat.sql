@@ -1,7 +1,7 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : local
+ Source Server         : dat
  Source Server Type    : MySQL
  Source Server Version : 80019
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 10/06/2020 17:54:25
+ Date: 11/06/2020 19:06:23
 */
 
 SET NAMES utf8mb4;
@@ -69,7 +69,16 @@ CREATE TABLE `dat_user`  (
   `mobile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `enabled` bit(1) NOT NULL,
   `locked` bit(1) NOT NULL,
+  `accesstoken` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `expired` datetime(6) NOT NULL ON UPDATE CURRENT_TIMESTAMP(6),
+  `errortimes` int(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of dat_user
+-- ----------------------------
+INSERT INTO `dat_user` VALUES ('a856d22faba311eabbc300ff17336a76', 'Ducky Yang', 'fe0ec45240b7d9cbb10653004a4075e9', 'admin', '2020-06-11 13:23:18', 'duckyyang@vip.qq.com', '18511284334', b'1', b'0', 'C986D9F007F1412391A7D345653D78B9', '2020-06-12 17:28:41.704218', 0);
+INSERT INTO `dat_user` VALUES ('CB531F03B8B94E9DBA1F85EF9736A10A', 'Gao Lidong', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2020-06-11 17:59:20', 'gld@cnki.net', '18000000000', b'1', b'0', '', '0001-01-01 00:00:00.000000', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
