@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using SqlSugar;
 
@@ -21,8 +22,8 @@ namespace ducky_api_server.Core
             //Print sql
             Db.Aop.OnLogExecuting = (sql, pars) =>
             {
-                // Console.WriteLine(sql + "\r\n" + db.Utilities.SerializeObject(pars.ToDictionary(it => it.ParameterName, it => it.Value)));
-                // Console.WriteLine();
+                Console.WriteLine(sql + "\r\n" + Db.Utilities.SerializeObject(pars.ToDictionary(it => it.ParameterName, it => it.Value)));
+                Console.WriteLine();
             };
         }
 
@@ -158,7 +159,7 @@ namespace ducky_api_server.Core
         /// <param name="pageIndex">页索引</param>
         /// <param name="pageSize">页大小</param>
         /// <returns></returns>
-        public virtual List<T> GetList(Expressionable<T> expression, int pageIndex = 1, int pageSize = 30)
+        public virtual List<T> GetList(Expressionable<T> expression, int pageIndex, int pageSize,ref int total)
         {
             if (expression == null)
             {
@@ -174,7 +175,7 @@ namespace ducky_api_server.Core
             }
             try
             {
-                return Db.Queryable<T>().Where(expression.ToExpression()).ToPageList(pageIndex, pageSize);
+                return Db.Queryable<T>().Where(expression.ToExpression()).ToPageList(pageIndex, pageSize,ref total);
             }
             catch (System.Exception)
             {

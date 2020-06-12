@@ -33,5 +33,6 @@ namespace ducky_api_server.Model
                 _pageSize = value;
             }
         }
+        public long Total { get; set; }
     }
 }

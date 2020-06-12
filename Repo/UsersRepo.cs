@@ -20,11 +20,15 @@ namespace ducky_api_server.Repo
         }
         public List<UsersModel> GetUsers(QueryUserModel query)
         {
+            int total = 0;
+
             var exp = Db.SqlExpression;
 
             exp.AndIF(!string.IsNullOrEmpty(query.Filter), r => r.name.Contains(query.Filter));
             exp.AndIF(!string.IsNullOrEmpty(query.Role), r => r.role.Contains(query.Role));
-            return Db.GetList(exp, query.PageIndex, query.PageSize).Select(r => { r.password = ""; return r; }).ToList();
+            var list = Db.GetList(exp, query.PageIndex, query.PageSize,ref total);
+            query.Total = total;
+            return list;
         }
         public UsersModel GetUserByAccount(string account)
         {

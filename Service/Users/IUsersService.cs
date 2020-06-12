@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using ducky_api_server.Model.Users;
 
-namespace ducky_api_server.Users
+namespace ducky_api_server.Service.Users
 {
     public interface IUsersService
     {

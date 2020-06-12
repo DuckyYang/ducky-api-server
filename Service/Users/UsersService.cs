@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ducky_api_server.Core;
 using ducky_api_server.Model.Users;
 using ducky_api_server.Repo;
 
-namespace ducky_api_server.Users
+namespace ducky_api_server.Service.Users
 {
     public class UsersService : IUsersService
     {
@@ -15,7 +16,7 @@ namespace ducky_api_server.Users
         }
         public List<UsersModel> GetUsers(QueryUserModel query)
         {
-            return userRepo.GetUsers(query);
+            return userRepo.GetUsers(query).Select(r=>{r.password="***";return r;}).ToList();
         }
         public (string msg, UsersModel user) SignIn(string account, string password)
         {

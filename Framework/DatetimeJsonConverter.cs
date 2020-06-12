@@ -2,7 +2,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace ducky_api_server.Converters
+namespace ducky_api_server.Framework
 {
     public class DatetimeJsonConverter : JsonConverter<DateTime>
     {

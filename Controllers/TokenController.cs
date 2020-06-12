@@ -1,7 +1,7 @@
 using ducky_api_server.Core;
 using ducky_api_server.Model;
 using ducky_api_server.Model.Users;
-using ducky_api_server.Users;
+using ducky_api_server.Service.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ducky_api_server.Controllers

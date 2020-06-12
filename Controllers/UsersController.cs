@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using ducky_api_server.Model.Users;
-using ducky_api_server.Users;
 using System.Collections.Generic;
 using ducky_api_server.Model;
+using ducky_api_server.Service.Users;
+using ducky_api_server.Model.Users;
 
 namespace ducky_api_server.Controllers
 {
@@ -19,7 +19,7 @@ namespace ducky_api_server.Controllers
         public ResponseModel Get([FromQuery] QueryUserModel query)
         {
             var result = UsersService.GetUsers(query);
-            return Success(result);
+            return Success(result,query.Total);
         }
         [HttpPost]
         [Route("")]
