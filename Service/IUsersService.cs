@@ -10,5 +10,7 @@ namespace ducky_api_server.Users
         UsersModel GetUser(string accesstoken);
         UsersModel AddUser(UsersModel model);
         UsersModel UpdateUser(string id, UsersModel model);
+        bool UnLockUser(string id);
+        bool UpdateRole(string id, string role);
     }
 }

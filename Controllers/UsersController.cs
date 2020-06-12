@@ -33,7 +33,21 @@ namespace ducky_api_server.Controllers
         public ResponseModel Put(string id, [FromBody] UsersModel model)
         {
             var result = UsersService.UpdateUser(id, model);
-           return Success(result);
+            return Success(result);
+        }
+        [HttpPut]
+        [Route("{id}/locked")]
+        public ResponseModel UnLockUser(string id)
+        {
+            var result = UsersService.UnLockUser(id);
+            return Success(result);
+        }
+        [HttpPut]
+        [Route("{id}/role")]
+        public ResponseModel UpdateRole(string id, string role)
+        {
+            var result = UsersService.UpdateRole(id, role);
+            return Success(result);
         }
     }
 }

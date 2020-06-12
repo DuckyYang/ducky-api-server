@@ -31,11 +31,18 @@ namespace ducky_api_server.Users
                 // 比较密码
                 if (password != user.password)
                 {
+                    user.errortimes++;
                     // 
-                    userRepo.UpdateErrorTimes(user);
-                    if (user.locked == 1)
+                    if (user.errortimes > 8)
                     {
+                        user.locked = 1;
+                        user.errortimes = 0;
+                        userRepo.LockUser(user);
                         return ("密码错误次数过多,账户已被锁定,请联系管理员解锁!", null);
+                    }
+                    else
+                    {
+                        userRepo.UpdateErrorTimes(user);
                     }
                     return ("用户名或密码错误!", null);
                 }
@@ -73,6 +80,16 @@ namespace ducky_api_server.Users
             model.id = id;
             var user = userRepo.UpdateUser(model);
             return user;
+        }
+        public bool UnLockUser(string id)
+        {
+            bool success = userRepo.UnLockUser(id);
+            return success;
+        }
+        public bool UpdateRole(string id, string role)
+        {
+            bool success = userRepo.UpdateRole(id, role);
+            return success;
         }
     }
 }

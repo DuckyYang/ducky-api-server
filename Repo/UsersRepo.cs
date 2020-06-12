@@ -33,18 +33,15 @@ namespace ducky_api_server.Repo
         }
         public bool UpdateErrorTimes(UsersModel user)
         {
-            user.errortimes += 1;
-            if (user.errortimes > 8)
-            {
-                // 锁定账号
-                user.errortimes = 0;
-                user.locked = 1;
-                return Db.Update(user, r => r.id == user.id, r => new { r.locked, r.errortimes });
-            }
-            else
-            {
-                return Db.Update(user, r => r.id == user.id, r => new { r.errortimes });
-            }
+
+            return Db.Update(user, r => r.id == user.id, r => new { r.errortimes });
+        }
+        public bool LockUser(UsersModel user)
+        {
+            // 锁定账号
+            user.errortimes = 0;
+            user.locked = 1;
+            return Db.Update(user, r => r.id == user.id, r => new { r.locked, r.errortimes });
         }
         public bool UpdateUserToken(UsersModel user)
         {
@@ -90,6 +87,16 @@ namespace ducky_api_server.Repo
                 return user;
             }
             return null;
+        }
+
+        public bool UpdateRole(string id, string role)
+        {
+            return Db.Update(new UsersModel { role = role }, r => r.id == id, r => new { r.role });
+        }
+
+        public bool UnLockUser(string id)
+        {
+            return Db.Update(new UsersModel { locked = 0 }, r => r.id == id, r => new { r.locked });
         }
     }
 }
