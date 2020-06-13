@@ -16,7 +16,7 @@ namespace ducky_api_server.Service.Users
         }
         public List<UsersModel> GetUsers(QueryUserModel query)
         {
-            return userRepo.GetUsers(query).Select(r=>{r.password="***";return r;}).ToList();
+            return userRepo.GetUsers(query).Select(r => { r.password = "***"; return r; }).ToList();
         }
         public (string msg, UsersModel user) SignIn(string account, string password)
         {
@@ -51,7 +51,7 @@ namespace ducky_api_server.Service.Users
                 user.expired = DateTime.Now.AddDays(1);
                 userRepo.UpdateUserToken(user);
 
-                user.password = "";
+                user.password = "***";
                 return ("", user);
             }
 
@@ -65,31 +65,74 @@ namespace ducky_api_server.Service.Users
                 return null;
             }
             var user = userRepo.GetUser(accesstoken);
+            user.password = "***";
             return user;
         }
-        public UsersModel AddUser(UsersModel model)
+        public (UsersModel user, string msg) AddUser(UsersModel model)
         {
+            if (model.IsNull() || model.name.IsEmpty() || model.email.IsEmpty() || model.password.IsEmpty() || model.role.IsEmpty())
+            {
+                return (null, "缺少关键参数");
+            }
             var user = userRepo.AddUser(model);
-            return user;
+            user.password = "***";
+            return (user, "");
         }
         public UsersModel UpdateUser(string id, UsersModel model)
         {
-            if (model == null)
+            if (model == null || id.IsEmpty())
             {
                 return null;
             }
             model.id = id;
             var user = userRepo.UpdateUser(model);
+            user.password = "***";
             return user;
         }
         public bool UnLockUser(string id)
         {
-            bool success = userRepo.UnLockUser(id);
-            return success;
+            var user = userRepo.GetUserById(id);
+            if (!user.IsNull())
+            {
+                bool success;
+                if (user.locked == 1)
+                {
+                    success = userRepo.UnLockUser(id);
+                }
+                else
+                {
+                    success = userRepo.LockUser(id);
+                }
+                return success;
+            }
+            return false;
+        }
+        public bool EnableUser(string id)
+        {
+            var user = userRepo.GetUserById(id);
+            if (!user.IsNull())
+            {
+                bool success;
+                if (user.enabled == 1)
+                {
+                    success = userRepo.DisableUser(id);
+                }
+                else
+                {
+                    success = userRepo.EnableUser(id);
+                }
+                return success;
+            }
+            return false;
         }
         public bool UpdateRole(string id, string role)
         {
             bool success = userRepo.UpdateRole(id, role);
+            return success;
+        }
+        public bool RemoveUser(string id)
+        {
+            bool success = userRepo.RemoveUser(id);
             return success;
         }
     }

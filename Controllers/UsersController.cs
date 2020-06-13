@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ducky_api_server.Model;
 using ducky_api_server.Service.Users;
 using ducky_api_server.Model.Users;
+using ducky_api_server.Core;
 
 namespace ducky_api_server.Controllers
 {
@@ -19,14 +20,14 @@ namespace ducky_api_server.Controllers
         public ResponseModel Get([FromQuery] QueryUserModel query)
         {
             var result = UsersService.GetUsers(query);
-            return Success(result,query.Total);
+            return Success(result, query.Total);
         }
         [HttpPost]
         [Route("")]
         public ResponseModel Post([FromBody] UsersModel model)
         {
             var result = UsersService.AddUser(model);
-            return Success(result);
+            return result.user.IsNull() ? Fail(result.msg) : Success(result.user);
         }
         [HttpPut]
         [Route("{id}")]
@@ -43,11 +44,18 @@ namespace ducky_api_server.Controllers
             return Success(result);
         }
         [HttpPut]
-        [Route("{id}/role")]
-        public ResponseModel UpdateRole(string id, string role)
+        [Route("{id}/enabled")]
+        public ResponseModel EnableUser(string id)
         {
-            var result = UsersService.UpdateRole(id, role);
+            var result = UsersService.EnableUser(id);
             return Success(result);
+        }
+        [HttpDelete]
+        [Route("{id}")]
+        public ResponseModel RemoveUser(string id)
+        {
+            var result = UsersService.RemoveUser(id);
+            return result ? Success(id) : Fail();
         }
     }
 }

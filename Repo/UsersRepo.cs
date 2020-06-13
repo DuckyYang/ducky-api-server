@@ -26,7 +26,7 @@ namespace ducky_api_server.Repo
 
             exp.AndIF(!string.IsNullOrEmpty(query.Filter), r => r.name.Contains(query.Filter));
             exp.AndIF(!string.IsNullOrEmpty(query.Role), r => r.role.Contains(query.Role));
-            var list = Db.GetList(exp, query.PageIndex, query.PageSize,ref total);
+            var list = Db.GetList(exp, query.PageIndex, query.PageSize, ref total);
             query.Total = total;
             return list;
         }
@@ -56,19 +56,18 @@ namespace ducky_api_server.Repo
             var user = Db.GetSingle(r => r.accesstoken == accesstoken.Trim());
             return user;
         }
-
+        public UsersModel GetUserById(string id)
+        {
+            var user = Db.GetSingle(r => r.id == id.Trim());
+            return user;
+        }
         public UsersModel AddUser(UsersModel model)
         {
-            if (model.IsNull())
-            {
-                return null;
-            }
             model.id = GUID.New;
-            model.password = Md5.Encrypt("123456", 32);
+            model.password = Md5.Encrypt(model.password, 32);
             model.inserttime = DateTime.Now;
             if (Db.Insert(model))
             {
-                model.password = "";
                 return model;
             }
             return null;
@@ -84,10 +83,11 @@ namespace ducky_api_server.Repo
             user.name = model.name.IsEmpty() ? user.name : model.name;
             user.email = model.email.IsEmpty() ? user.email : model.email;
             user.mobile = model.mobile.IsEmpty() ? user.mobile : model.mobile;
+            user.password = model.password.IsEmpty() || model.password == "***" ? user.password : Md5.Encrypt(model.password, 32);
+            user.role = model.role.IsEmpty() ? user.role : model.role;
 
-            if (Db.Update(user, r => r.id == user.id, r => new { r.name, r.email, r.mobile }))
+            if (Db.Update(user, r => r.id == user.id, r => new { r.name, r.email, r.mobile,r.password,r.role }))
             {
-                user.password = "";
                 return user;
             }
             return null;
@@ -101,6 +101,24 @@ namespace ducky_api_server.Repo
         public bool UnLockUser(string id)
         {
             return Db.Update(new UsersModel { locked = 0 }, r => r.id == id, r => new { r.locked });
+        }
+        public bool LockUser(string id)
+        {
+            return Db.Update(new UsersModel { locked = 1 }, r => r.id == id, r => new { r.locked });
+        }
+        public bool RemoveUser(string id)
+        {
+            return Db.Delete(r => r.id == id);
+        }
+
+        public bool DisableUser(string id)
+        {
+           return Db.Update(new UsersModel { enabled = 0 }, r => r.id == id, r => new { r.enabled });
+        }
+
+        public bool EnableUser(string id)
+        {
+            return Db.Update(new UsersModel { enabled = 1 }, r => r.id == id, r => new { r.enabled });
         }
     }
 }
