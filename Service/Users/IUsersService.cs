@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ducky_api_server.Model.Users;
+using ducky_api_server.Model.UserServers;
 
 namespace ducky_api_server.Service.Users
 {
@@ -14,5 +15,6 @@ namespace ducky_api_server.Service.Users
         bool UpdateRole(string id, string role);
         bool RemoveUser(string id);
         bool EnableUser(string id);
+        bool AddUserServers(string id,List<UserServersModel> list);
     }
 }

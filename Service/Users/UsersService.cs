@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ducky_api_server.Core;
 using ducky_api_server.Model.Users;
+using ducky_api_server.Model.UserServers;
 using ducky_api_server.Repo;
 
 namespace ducky_api_server.Service.Users
@@ -10,9 +11,11 @@ namespace ducky_api_server.Service.Users
     public class UsersService : IUsersService
     {
         private UsersRepo userRepo;
+        private UserServersRepo userServersRepo;
         public UsersService()
         {
             userRepo = new UsersRepo();
+            userServersRepo = new UserServersRepo();
         }
         public List<UsersModel> GetUsers(QueryUserModel query)
         {
@@ -134,6 +137,24 @@ namespace ducky_api_server.Service.Users
         {
             bool success = userRepo.RemoveUser(id);
             return success;
+        }
+
+        public bool AddUserServers(string id,List<UserServersModel> list)
+        {
+            if (list.IsNull() || list.Count <= 0)
+            {
+                return false;
+            }
+            var user = userRepo.GetUserById(id);
+            if (user.IsNull())
+            {
+                return false;
+            }
+            list.ForEach(x =>
+            {
+                x.userid = user.id;
+            });
+            return userServersRepo.AddUserServers(list);
         }
     }
 }

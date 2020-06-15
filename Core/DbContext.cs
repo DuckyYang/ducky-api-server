@@ -35,6 +35,11 @@ namespace ducky_api_server.Core
             }
         }
 
+        public ISugarQueryable<T> GetQueryExpression()
+        {
+            return Db.Queryable<T>();
+        }
+
         /// <summary>
         /// 获取单个实体
         /// </summary>
@@ -182,6 +187,29 @@ namespace ducky_api_server.Core
                 throw;
             }
         }
+        public virtual List<T> GetList(ISugarQueryable<T> expression,int pageIndex,int pageSize,ref int total)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentException("expression is null");
+            }
+              if (pageIndex <= 0)
+            {
+                pageIndex = 1;
+            }
+            if (pageSize <= 0)
+            {
+                pageSize = 30;
+            }
+            try
+            {
+                return expression.ToPageList(pageIndex, pageSize,ref total);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
         /// <summary>
         /// 插入单条数据
         /// </summary>
@@ -221,6 +249,30 @@ namespace ducky_api_server.Core
             catch (System.Exception)
             {
 
+                throw;
+            }
+        }
+        /// <summary>
+        /// 批量插入
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public virtual bool InsertAll(List<T> list)
+        {
+            if (list == null)
+            {
+                return false;
+            }
+            if (list.Count == 0)
+            {
+                return true;
+            }
+            try
+            {
+                return Db.Insertable<T>(list).ExecuteCommand() > 0;
+            }
+            catch (System.Exception)
+            {
                 throw;
             }
         }
