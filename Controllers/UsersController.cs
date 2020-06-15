@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ducky_api_server.Model;
 using ducky_api_server.Service.Users;
 using ducky_api_server.Model.Users;
+using ducky_api_server.Model.UserServers;
 using ducky_api_server.Core;
 
 namespace ducky_api_server.Controllers
@@ -56,6 +57,14 @@ namespace ducky_api_server.Controllers
         {
             var result = UsersService.RemoveUser(id);
             return result ? Success(id) : Fail();
+        }
+
+        [HttpPost]
+        [Route("{id}/servers")]
+        public ResponseModel AddUserServers(string id,[FromBody]List<UserServersModel> list)
+        {
+            var result = UsersService.AddUserServers(id,list);
+            return result ? Success() : Fail();
         }
     }
 }
