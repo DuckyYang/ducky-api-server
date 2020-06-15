@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 12/06/2020 17:33:11
+ Date: 15/06/2020 18:46:29
 */
 
 SET NAMES utf8mb4;
@@ -74,6 +74,19 @@ CREATE TABLE `dat_role_auth`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for dat_servers
+-- ----------------------------
+DROP TABLE IF EXISTS `dat_servers`;
+CREATE TABLE `dat_servers`  (
+  `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `default_headers` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `enabled` bit(1) NOT NULL,
+  `order` int(0) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for dat_user
 -- ----------------------------
 DROP TABLE IF EXISTS `dat_user`;
@@ -96,7 +109,19 @@ CREATE TABLE `dat_user`  (
 -- ----------------------------
 -- Records of dat_user
 -- ----------------------------
+INSERT INTO `dat_user` VALUES ('1DA3F486B85C490DA3B58C05979AF8B5', 'Xu Xiang', 'd064cf3d3e6e493f4cc40d1f698d2544', 'admin', '2020-06-13 14:08:48', 'xx7057@cnki.net', '13146526301', b'1', b'0', '', '0001-01-01 00:00:00.000000', 0);
 INSERT INTO `dat_user` VALUES ('a856d22faba311eabbc300ff17336a76', 'Ducky Yang', 'fe0ec45240b7d9cbb10653004a4075e9', 'admin', '2020-06-11 13:23:18', 'duckyyang@vip.qq.com', '18511284334', b'1', b'0', '38F5E8993719480EBBC3260A91496D30', '2020-06-13 12:47:40.846001', 0);
-INSERT INTO `dat_user` VALUES ('CB531F03B8B94E9DBA1F85EF9736A10A', 'Gao Lidong', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2020-06-11 17:59:20', 'gld@cnki.net', '18000000000', b'1', b'0', '18754863CA324AF2BCA758223861B318', '2020-06-13 12:43:34.904402', 0);
+INSERT INTO `dat_user` VALUES ('CB531F03B8B94E9DBA1F85EF9736A10A', 'Gao Lidong', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '2020-06-11 17:59:20', 'gld@cnki.net', '18511803221', b'1', b'0', '18754863CA324AF2BCA758223861B318', '2020-06-13 15:17:07.084275', 0);
+
+-- ----------------------------
+-- Table structure for dat_user_servers
+-- ----------------------------
+DROP TABLE IF EXISTS `dat_user_servers`;
+CREATE TABLE `dat_user_servers`  (
+  `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `user_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `server_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
