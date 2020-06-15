@@ -16,5 +16,10 @@ namespace ducky_api_server.Service.Roles
         {
             return repo.GetAll(query.PageIndex,query.PageSize);
         }
+
+        public List<RolesModel> GetAll()
+        {
+            return repo.GetAll();
+        }
     }
 }

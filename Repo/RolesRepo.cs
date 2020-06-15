@@ -1,5 +1,6 @@
 using ducky_api_server.Core;
 using ducky_api_server.Model.Roles;
+using System;
 using System.Collections.Generic;
 
 namespace ducky_api_server.Repo
@@ -17,6 +18,9 @@ namespace ducky_api_server.Repo
             return Db.GetList(r=>r.enabled == 1,pageIndex,pageSize);
         }
 
-        
+        public List<RolesModel> GetAll()
+        {
+            return Db.GetAll();
+        }
     }
 }

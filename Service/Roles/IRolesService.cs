@@ -6,5 +6,6 @@ namespace ducky_api_server.Service.Roles
     public interface IRolesService
     {
          List<RolesModel> GetList(QueryRolesModel query);
+         List<RolesModel> GetAll();
     }
 }
