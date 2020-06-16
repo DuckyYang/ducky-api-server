@@ -6,11 +6,13 @@ namespace ducky_api_server.Model.Servers
     public class ServersModel
     {
         [SugarColumn(IsPrimaryKey=true)]
-        public string id { get; set; }
-        public string name { get; set; }
-        public string baseurl { get; set; }
-        public string default_headers { get; set; }
-        public int enabled { get; set; }
-        public int order { get; set; }
+        public string ID { get; set; }
+        public string Name { get; set; }
+        [SugarColumn(ColumnName="base_url")]
+        public string BaseUrl { get; set; }
+        [SugarColumn(ColumnName="default_headers")]
+        public string DefaultHeaders { get; set; }
+        public int Enabled { get; set; }
+        public int Order { get; set; }
     }
 }

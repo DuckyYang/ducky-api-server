@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using ducky_api_server.Core;
 using ducky_api_server.Model.Servers;
+using SqlSugar;
 
 namespace ducky_api_server.Repo
 {
@@ -14,8 +15,8 @@ namespace ducky_api_server.Repo
 
         public bool Add(ServersModel model)
         {
-            model.id = GUID.New;
-            model.enabled = 1;
+            model.ID = GUID.New;
+            model.Enabled = 1;
             return Db.Insert(model);
         }
 
@@ -23,8 +24,8 @@ namespace ducky_api_server.Repo
         {
             var sqlExp = Db.GetQueryExpression();
 
-            sqlExp.WhereIF(!query.Filter.IsEmpty(),r=>r.name.Contains(query.Filter));
-            sqlExp.OrderBy(x=>x.order);
+            sqlExp.WhereIF(!query.Filter.IsEmpty(),r=>r.Name.Contains(query.Filter));
+            sqlExp.OrderBy(x=>x.Order,OrderByType.Desc);
 
             int total = 0;
             var list = Db.GetList(sqlExp, query.PageIndex,query.PageSize,ref total);
@@ -33,26 +34,26 @@ namespace ducky_api_server.Repo
         }
         public bool EnableServer(string id)
         {
-            return Db.Update(new ServersModel { enabled = 1 },x=>x.id==id,x=>new { x.enabled });
+            return Db.Update(new ServersModel { Enabled = 1 },x=>x.ID==id,x=>new { x.Enabled });
         }
         public bool DisableServer(string id)
         {
-            return Db.Update(new ServersModel { enabled = 0 },x=>x.id==id,x=>new { x.enabled });
+            return Db.Update(new ServersModel { Enabled = 0 },x=>x.ID==id,x=>new { x.Enabled });
         }
         public bool Delete(string id)
         {
-            return Db.Delete(x=>x.id == id);
+            return Db.Delete(x=>x.ID == id);
         }
         public bool Update(ServersModel model)
         {
-            var detail = Db.GetSingle(x=>x.id == model.id);
+            var detail = Db.GetSingle(x=>x.ID == model.ID);
             if (detail != null)
             {
-                detail.name = model.name.IsEmpty() ? detail.name : model.name;
-                detail.baseurl = model.baseurl.IsEmpty() ? detail.baseurl : model.baseurl;
-                detail.default_headers = model.default_headers.IsEmpty() ? detail.default_headers :model.default_headers;
-                detail.order = model.order;
-                return Db.Update(detail,x=>x.id == detail.id,x=>new{x.name,x.baseurl,x.default_headers,x.order});
+                detail.Name = model.Name.IsEmpty() ? detail.Name : model.Name;
+                detail.BaseUrl = model.BaseUrl.IsEmpty() ? detail.BaseUrl : model.BaseUrl;
+                detail.DefaultHeaders = model.DefaultHeaders.IsEmpty() ? detail.DefaultHeaders :model.DefaultHeaders;
+                detail.Order = model.Order;
+                return Db.Update(detail,x=>x.ID == detail.ID,x=>new{x.Name,x.BaseUrl,x.DefaultHeaders,x.Order});
             }
             return false;
         }

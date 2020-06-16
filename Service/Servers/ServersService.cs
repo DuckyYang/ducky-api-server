@@ -67,7 +67,7 @@ namespace ducky_api_server.Service.Servers
             {
                 return false;
             }
-            model.id = id;
+            model.ID = id;
             return repo.Update(model);
         }
     }
