@@ -16,6 +16,7 @@ namespace ducky_api_server.Controllers
         {
             UsersService = usersService;
         }
+     
         [HttpGet]
         [Route("")]
         public ResponseModel Get([FromQuery] QueryUserModel query)

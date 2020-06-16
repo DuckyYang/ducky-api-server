@@ -22,5 +22,15 @@ namespace ducky_api_server.Repo
         {
             return Db.GetAll();
         }
+        public RolesModel GetRole(string role)
+        {
+            return Db.GetSingle(x=>x.role == role);
+        }
+
+        public bool AddRole(RolesModel model)
+        {
+            model.enabled = 1;
+            return Db.Insert(model);
+        }
     }
 }

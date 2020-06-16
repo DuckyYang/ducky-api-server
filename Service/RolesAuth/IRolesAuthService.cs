@@ -6,5 +6,7 @@ namespace ducky_api_server.Service.RolesAuth
     public interface IRolesAuthService
     {
         List<RolesAuthModel> GetRolesAuths();
+        bool ChangeRoleViewAuth(string id);
+        bool ChangeRoleOperateAuth(string id);
     }
 }

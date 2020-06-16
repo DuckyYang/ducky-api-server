@@ -7,5 +7,6 @@ namespace ducky_api_server.Service.Roles
     {
          List<RolesModel> GetList(QueryRolesModel query);
          List<RolesModel> GetAll();
+        bool AddRole(RolesModel model);
     }
 }

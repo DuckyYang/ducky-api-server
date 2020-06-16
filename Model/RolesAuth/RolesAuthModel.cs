@@ -18,5 +18,9 @@ namespace ducky_api_server.Model.RolesAuth
         /// <value></value>
         [SugarColumn(IsIgnore=true)]
         public string menu { get; set; }
+        [SugarColumn(IsIgnore=true)]
+        public string menu_path { get; set; }
+        [SugarColumn(IsIgnore=true)]
+        public int order { get; set; }
     }
 }

@@ -23,13 +23,19 @@ namespace ducky_api_server.Controllers
             var result = Service.GetList(query);
             return Success(result);
         }
-        [Route("menus")]
+        [Route("auths")]
         [HttpGet]
-        public ResponseModel GetRoleMenus()
+        public ResponseModel GetRolesAuths()
         {
             var result = RolesAuthService.GetRolesAuths();
             return Success(result);
         }
-
+        [Route("")]
+        [HttpPost]
+        public ResponseModel Post([FromBody]RolesModel model)
+        {
+            var result = Service.AddRole(model);
+            return result ? Success(model) : Fail();
+        }
     }
 }
