@@ -3,39 +3,59 @@
 
  Source Server         : dat
  Source Server Type    : MySQL
- Source Server Version : 80018
+ Source Server Version : 80019
  Source Host           : localhost:3306
  Source Schema         : dat
 
  Target Server Type    : MySQL
- Target Server Version : 80018
+ Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 16/06/2020 21:15:30
+ Date: 17/06/2020 17:36:06
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
+-- Table structure for dat_documents
+-- ----------------------------
+DROP TABLE IF EXISTS `dat_documents`;
+CREATE TABLE `dat_documents`  (
+  `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `server_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属服务id',
+  `collection` bit(2) NOT NULL COMMENT '是否是集合',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
+  `path` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '路径，如Workflow,Task,Create',
+  `method` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '请求方法：GET,POST,PUT,DELETE,OPTIONS',
+  `address` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '接口完整地址',
+  `headers` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '请求头json',
+  `content_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'json & form & params',
+  `params` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'get请求的key&value json',
+  `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'post请求的key&value json',
+  `json` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '当contenttype=json时的参数配置',
+  `response` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '最后一次请求时服务器的响应数据',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for dat_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `dat_menu`;
-CREATE TABLE `dat_menu` (
+CREATE TABLE `dat_menu`  (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `menu` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `enabled` bit(1) NOT NULL,
-  `order` int(11) NOT NULL,
+  `order` int(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dat_menu
 -- ----------------------------
-BEGIN;
 INSERT INTO `dat_menu` VALUES ('5b819459ac7d11eabbc300ff17336a76', 'Settings', '/settings', '系统设置', 'el-icon-setting', b'1', 8);
 INSERT INTO `dat_menu` VALUES ('72dce7bbac7d11eabbc300ff17336a76', 'Logs', '/logs', '接口日志', 'el-icon-s-data', b'1', 2);
 INSERT INTO `dat_menu` VALUES ('7a3ee3e3ac7d11eabbc300ff17336a76', 'Servers', '/servers', '接口管理', 'el-icon-s-promotion', b'1', 3);
@@ -43,44 +63,40 @@ INSERT INTO `dat_menu` VALUES ('8ff56940ac7d11eabbc300ff17336a76', 'Documents', 
 INSERT INTO `dat_menu` VALUES ('94bb32ccac7d11eabbc300ff17336a76', 'MockServer', '/MockServer', '模拟服务', 'el-icon-s-platform', b'1', 5);
 INSERT INTO `dat_menu` VALUES ('996c4e1fac7d11eabbc300ff17336a76', 'Users', '/Users', '系统用户', 'el-icon-s-custom', b'1', 6);
 INSERT INTO `dat_menu` VALUES ('9f654aa5ac7d11eabbc300ff17336a76', 'Roles', '/Roles', '系统角色', 'el-icon-s-platform', b'1', 7);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for dat_role
 -- ----------------------------
 DROP TABLE IF EXISTS `dat_role`;
-CREATE TABLE `dat_role` (
+CREATE TABLE `dat_role`  (
   `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `enabled` bit(1) NOT NULL,
   PRIMARY KEY (`role`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dat_role
 -- ----------------------------
-BEGIN;
 INSERT INTO `dat_role` VALUES ('admin', b'1');
 INSERT INTO `dat_role` VALUES ('master', b'1');
 INSERT INTO `dat_role` VALUES ('user', b'1');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for dat_role_auth
 -- ----------------------------
 DROP TABLE IF EXISTS `dat_role_auth`;
-CREATE TABLE `dat_role_auth` (
+CREATE TABLE `dat_role_auth`  (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `role` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `menuid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `view` tinyint(1) NOT NULL,
   `operate` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dat_role_auth
 -- ----------------------------
-BEGIN;
 INSERT INTO `dat_role_auth` VALUES ('0E13CCCA016544D4AD878B96F74630A8', 'master', '9f654aa5ac7d11eabbc300ff17336a76', 0, 0);
 INSERT INTO `dat_role_auth` VALUES ('120AD1630E4D44D38AB4012620552787', 'master', '8ff56940ac7d11eabbc300ff17336a76', 0, 0);
 INSERT INTO `dat_role_auth` VALUES ('2200c41daf8e11ea999e00ff17336a76', 'admin', '5b819459ac7d11eabbc300ff17336a76', 1, 1);
@@ -102,74 +118,63 @@ INSERT INTO `dat_role_auth` VALUES ('685F9B209AFF4E93BC134A37A763EA43', 'master'
 INSERT INTO `dat_role_auth` VALUES ('A3D265B18CAE4CC88A06B71645E44A59', 'master', '5b819459ac7d11eabbc300ff17336a76', 0, 0);
 INSERT INTO `dat_role_auth` VALUES ('CD9812C52BA441889C543F9DEDEA0D7C', 'master', '7a3ee3e3ac7d11eabbc300ff17336a76', 1, 0);
 INSERT INTO `dat_role_auth` VALUES ('D3F264BDA72A4C1F8AD2CCE76FE7DA99', 'master', '94bb32ccac7d11eabbc300ff17336a76', 0, 0);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for dat_servers
 -- ----------------------------
 DROP TABLE IF EXISTS `dat_servers`;
-CREATE TABLE `dat_servers` (
+CREATE TABLE `dat_servers`  (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `default_headers` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `enabled` bit(1) NOT NULL,
-  `order` int(11) NOT NULL,
-  `base_url` varchar(255) NOT NULL,
+  `order` int(0) NOT NULL,
+  `base_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dat_servers
 -- ----------------------------
-BEGIN;
-INSERT INTO `dat_servers` VALUES ('D3FE0C3108D34C3E9CC48FCF95F69B8A', '工作流2.0', '', b'1', 0, 'http://oa.cnki.net/api/workflow2.0');
-INSERT INTO `dat_servers` VALUES ('F133B98847274482A2B1DC3B849F659D', '人事类接口', '', b'1', 20, 'http://oa.cnki.net/api/hrmanage');
-COMMIT;
+INSERT INTO `dat_servers` VALUES ('D3FE0C3108D34C3E9CC48FCF95F69B8A', '工作流2.0', 'accesstoken', b'1', 10, 'http://oa.cnki.net/api/workflow2.0');
+INSERT INTO `dat_servers` VALUES ('F133B98847274482A2B1DC3B849F659D', '人事类接口', 'accesstoken', b'1', 20, 'http://oa.cnki.net/api/hrmanage');
 
 -- ----------------------------
 -- Table structure for dat_user
 -- ----------------------------
 DROP TABLE IF EXISTS `dat_user`;
-CREATE TABLE `dat_user` (
+CREATE TABLE `dat_user`  (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `inserttime` datetime NOT NULL,
+  `inserttime` datetime(0) NOT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `mobile` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `enabled` bit(1) NOT NULL,
   `locked` bit(1) NOT NULL,
   `accesstoken` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `expired` datetime(6) NOT NULL ON UPDATE CURRENT_TIMESTAMP(6),
-  `errortimes` int(11) NOT NULL,
+  `errortimes` int(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dat_user
 -- ----------------------------
-BEGIN;
 INSERT INTO `dat_user` VALUES ('1DA3F486B85C490DA3B58C05979AF8B5', 'Xu Xiang', 'd064cf3d3e6e493f4cc40d1f698d2544', 'user', '2020-06-13 14:08:48', 'xx7057@cnki.net', '13146526301', b'1', b'0', '', '2020-06-16 18:32:19.176262', 0);
 INSERT INTO `dat_user` VALUES ('a856d22faba311eabbc300ff17336a76', 'Ducky Yang', 'fe0ec45240b7d9cbb10653004a4075e9', 'admin', '2020-06-11 13:23:18', 'duckyyang@vip.qq.com', '18511284334', b'1', b'0', '38F5E8993719480EBBC3260A91496D30', '2020-06-13 12:47:40.846001', 0);
 INSERT INTO `dat_user` VALUES ('CB531F03B8B94E9DBA1F85EF9736A10A', 'Gao Lidong', 'e10adc3949ba59abbe56e057f20f883e', 'master', '2020-06-11 17:59:20', 'gld@cnki.net', '18511803221', b'1', b'0', '18754863CA324AF2BCA758223861B318', '2020-06-16 18:31:16.646521', 0);
-COMMIT;
 
 -- ----------------------------
 -- Table structure for dat_user_servers
 -- ----------------------------
 DROP TABLE IF EXISTS `dat_user_servers`;
-CREATE TABLE `dat_user_servers` (
+CREATE TABLE `dat_user_servers`  (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `user_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `server_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-
--- ----------------------------
--- Records of dat_user_servers
--- ----------------------------
-BEGIN;
-COMMIT;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
