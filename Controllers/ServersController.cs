@@ -1,5 +1,5 @@
-using ducky_api_server.Model;
-using ducky_api_server.Model.Servers;
+using ducky_api_server.DTO;
+using ducky_api_server.DTO.Servers;
 using ducky_api_server.Service.Servers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,28 +15,28 @@ namespace ducky_api_server.Controllers
         }
         [HttpGet]
         [Route("")]
-        public ResponseModel GetList([FromQuery] QueryServersModel query)
+        public ResponseDTO GetList([FromQuery] QueryServersDTO query)
         {
             var result = Service.GetList(query);
             return Success(result, query.Total);
         }
         [HttpPost]
         [Route("")]
-        public ResponseModel Add([FromBody] ServersModel model)
+        public ResponseDTO Add([FromBody] ServersDTO model)
         {
             var result = Service.Add(model);
             return result ? Success(model) : Fail();
         }
         [HttpPut]
         [Route("{id}")]
-        public ResponseModel Update(string id, [FromBody] ServersModel model)
+        public ResponseDTO Update(string id, [FromBody] ServersDTO model)
         {
             var result = Service.Update(id, model);
             return result ? Success() : Fail();
         }
         [HttpDelete]
         [Route("{id}")]
-        public ResponseModel Delete(string id)
+        public ResponseDTO Delete(string id)
         {
             var result = Service.Delete(id);
             return result ? Success() : Fail();
@@ -44,14 +44,14 @@ namespace ducky_api_server.Controllers
 
         [HttpPut]
         [Route("{id}/enabled")]
-        public ResponseModel Enable(string id)
+        public ResponseDTO Enable(string id)
         {
             var result = Service.EnableServer(id);
             return result ? Success() : Fail();
         }
         [HttpPut]
         [Route("{id}/disabled")]
-        public ResponseModel Disable(string id)
+        public ResponseDTO Disable(string id)
         {
             var result = Service.DisableServer(id);
             return result ? Success() : Fail();

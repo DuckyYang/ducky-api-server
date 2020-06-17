@@ -1,6 +1,6 @@
-namespace ducky_api_server.Model.Users
+namespace ducky_api_server.DTO.Users
 {
-    public class UsersSignInModel
+    public class UsersSignInDTO
     {
         /// <summary>
         /// 登录用户名,支持使用邮箱或手机号登录

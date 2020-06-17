@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using ducky_api_server.Core;
-using ducky_api_server.Model.Roles;
+using ducky_api_server.DTO.Roles;
 using ducky_api_server.Repo;
 
 namespace ducky_api_server.Service.Roles
@@ -18,16 +18,16 @@ namespace ducky_api_server.Service.Roles
             menusRepo = new MenusRepo();
         }
 
-        public List<RolesModel> GetList(QueryRolesModel query)
+        public List<RolesDTO> GetList(QueryRolesDTO query)
         {
             return repo.GetAll(query.PageIndex,query.PageSize);
         }
 
-        public List<RolesModel> GetAll()
+        public List<RolesDTO> GetAll()
         {
             return repo.GetAll();
         }
-        public bool AddRole(RolesModel model)
+        public bool AddRole(RolesDTO model)
         {
             if (model.IsNull() || model.role.IsEmpty())
             {

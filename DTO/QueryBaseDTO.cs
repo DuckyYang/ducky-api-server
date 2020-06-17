@@ -1,6 +1,6 @@
-namespace ducky_api_server.Model
+namespace ducky_api_server.DTO
 {
-    public class QueryBaseModel
+    public class QueryBaseDTO
     {
         private int _pageIndex;
         private int _pageSize;

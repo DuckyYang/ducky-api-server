@@ -1,6 +1,6 @@
-namespace ducky_api_server.Model.Users
+namespace ducky_api_server.DTO.Users
 {
-    public class QueryUserModel:QueryBaseModel
+    public class QueryUserDTO:QueryBaseDTO
     {
         public string Filter { get; set; }
 

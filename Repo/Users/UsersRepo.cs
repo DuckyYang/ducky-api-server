@@ -4,6 +4,7 @@ using ducky_api_server.Model.Users;
 using System.Linq.Expressions;
 using System;
 using System.Linq;
+using ducky_api_server.DTO.Users;
 
 namespace ducky_api_server.Repo
 {
@@ -18,7 +19,7 @@ namespace ducky_api_server.Repo
         {
             return Db.GetSingle();
         }
-        public List<UsersModel> GetUsers(QueryUserModel query)
+        public List<UsersDTO> GetUsers(QueryUserDTO query)
         {
             int total = 0;
 
@@ -26,54 +27,52 @@ namespace ducky_api_server.Repo
 
             exp.AndIF(!string.IsNullOrEmpty(query.Filter), r => r.name.Contains(query.Filter));
             exp.AndIF(!string.IsNullOrEmpty(query.Role), r => r.role.Contains(query.Role));
-            var list = Db.GetList(exp, query.PageIndex, query.PageSize, ref total);
+            var list = Db.GetList<UsersDTO>(exp, query.PageIndex, query.PageSize, ref total);
             query.Total = total;
             return list;
         }
-        public UsersModel GetUserByAccount(string account)
+        public UsersDTO GetUserByAccount(string account)
         {
-            var user = Db.GetSingle(r => r.email == account.Trim());
+            var user = Db.GetSingle<UsersDTO>(r => r.email == account.Trim());
             return user;
         }
-        public bool UpdateErrorTimes(UsersModel user)
+        public bool UpdateErrorTimes(string id,int errortimes)
         {
-
-            return Db.Update(user, r => r.id == user.id, r => new { r.errortimes });
+            return Db.Update(new UsersModel{errortimes=errortimes}, r => r.id == id, r => new { r.errortimes });
         }
-        public bool LockUser(UsersModel user)
+        public bool LockUser(string id)
         {
             // 锁定账号
-            user.errortimes = 0;
-            user.locked = 1;
-            return Db.Update(user, r => r.id == user.id, r => new { r.locked, r.errortimes });
+            return Db.Update(new UsersModel{errortimes=0,locked=1}, r => r.id == id, r => new { r.locked, r.errortimes });
         }
-        public bool UpdateUserToken(UsersModel user)
+        public bool UpdateUserToken(string id,string accesstoken)
         {
-            return Db.Update(user, r => r.id == user.id, r => new { r.accesstoken, r.expired });
+            return Db.Update(new UsersModel{accesstoken =accesstoken,expired=DateTime.Now.AddDays(1)}, r => r.id == id, r => new { r.accesstoken, r.expired });
         }
-        public UsersModel GetUser(string accesstoken)
+        public UsersDTO GetUser(string accesstoken)
         {
-            var user = Db.GetSingle(r => r.accesstoken == accesstoken.Trim());
+            var user = Db.GetSingle<UsersDTO>(r => r.accesstoken == accesstoken.Trim());
             return user;
         }
-        public UsersModel GetUserById(string id)
+        public UsersDTO GetUserById(string id)
         {
-            var user = Db.GetSingle(r => r.id == id.Trim());
+            var user = Db.GetSingle<UsersDTO>(r => r.id == id.Trim());
             return user;
         }
-        public UsersModel AddUser(UsersModel model)
+        public UsersDTO AddUser(UsersDTO dto)
         {
+            var model = dto.Map<UsersModel>();
             model.id = GUID.New;
             model.password = Md5.Encrypt(model.password, 32);
             model.inserttime = DateTime.Now;
             if (Db.Insert(model))
             {
-                return model;
+                return model.Map<UsersDTO>();
             }
             return null;
         }
 
-        public UsersModel UpdateUser(UsersModel model)
+        public UsersDTO UpdateUser(UsersDTO model)
         {
             var user = Db.GetSingle(r => r.id == model.id);
             if (user.IsNull())
@@ -88,7 +87,7 @@ namespace ducky_api_server.Repo
 
             if (Db.Update(user, r => r.id == user.id, r => new { r.name, r.email, r.mobile,r.password,r.role }))
             {
-                return user;
+                return user.Map<UsersDTO>();
             }
             return null;
         }
@@ -102,20 +101,14 @@ namespace ducky_api_server.Repo
         {
             return Db.Update(new UsersModel { locked = 0 }, r => r.id == id, r => new { r.locked });
         }
-        public bool LockUser(string id)
-        {
-            return Db.Update(new UsersModel { locked = 1 }, r => r.id == id, r => new { r.locked });
-        }
         public bool RemoveUser(string id)
         {
             return Db.Delete(r => r.id == id);
         }
-
         public bool DisableUser(string id)
         {
            return Db.Update(new UsersModel { enabled = 0 }, r => r.id == id, r => new { r.enabled });
         }
-
         public bool EnableUser(string id)
         {
             return Db.Update(new UsersModel { enabled = 1 }, r => r.id == id, r => new { r.enabled });

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ducky_api_server.Core;
+using ducky_api_server.DTO.Servers;
 using ducky_api_server.Model.Servers;
 using SqlSugar;
 
@@ -13,14 +14,15 @@ namespace ducky_api_server.Repo
             Db = new DbContext<ServersModel>();
         }
 
-        public bool Add(ServersModel model)
+        public bool Add(ServersDTO dto)
         {
+            var model = dto.Map<ServersModel>();
             model.ID = GUID.New;
             model.Enabled = 1;
             return Db.Insert(model);
         }
 
-        public List<ServersModel> GetList(QueryServersModel query)
+        public List<ServersDTO> GetList(QueryServersDTO query)
         {
             var sqlExp = Db.GetQueryExpression();
 
@@ -30,7 +32,7 @@ namespace ducky_api_server.Repo
             int total = 0;
             var list = Db.GetList(sqlExp, query.PageIndex,query.PageSize,ref total);
             query.Total = total;
-            return list;
+            return list.MapList<ServersDTO>();
         }
         public bool EnableServer(string id)
         {
@@ -44,7 +46,7 @@ namespace ducky_api_server.Repo
         {
             return Db.Delete(x=>x.ID == id);
         }
-        public bool Update(ServersModel model)
+        public bool Update(ServersDTO model)
         {
             var detail = Db.GetSingle(x=>x.ID == model.ID);
             if (detail != null)

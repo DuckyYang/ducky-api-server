@@ -71,6 +71,17 @@ namespace ducky_api_server.Core
                 throw;
             }
         }
+        public virtual To GetSingle<To>(Expression<Func<T, bool>> expression) where To: class,new()
+        {
+            try
+            {
+                return Db.Queryable<T>().First(expression).Map<To>();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
         /// <summary>
         /// 获取所有数据
         /// </summary>
@@ -88,6 +99,22 @@ namespace ducky_api_server.Core
             }
         }
         /// <summary>
+        /// 获取所有数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual List<To> GetAll<To>() where To:class,new()
+        {
+            try
+            {
+                return Db.Queryable<T>().ToList().MapList<To>();
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+        /// <summary>
         /// 获取数据
         /// </summary>
         /// <param name="expression">检索表达式</param>
@@ -97,6 +124,23 @@ namespace ducky_api_server.Core
             try
             {
                 return Db.Queryable<T>().Where(expression).ToList();
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+           /// <summary>
+        /// 获取数据
+        /// </summary>
+        /// <param name="expression">检索表达式</param>
+        /// <returns></returns>
+        public virtual List<To> GetList<To>(Expression<Func<T, bool>> expression) where To:class,new()
+        {
+            try
+            {
+                return Db.Queryable<T>().Where(expression).ToList().MapList<To>();
             }
             catch (System.Exception)
             {
@@ -164,6 +208,36 @@ namespace ducky_api_server.Core
         /// <param name="pageIndex">页索引</param>
         /// <param name="pageSize">页大小</param>
         /// <returns></returns>
+        public virtual List<To> GetList<To>(Expression<Func<T, bool>> expression, int pageIndex = 1, int pageSize = 30) where To:class,new()
+        {
+            if (expression == null)
+            {
+                throw new ArgumentException("expression is null");
+            }
+            if (pageIndex <= 0)
+            {
+                pageIndex = 1;
+            }
+            if (pageSize <= 0)
+            {
+                pageSize = 30;
+            }
+            try
+            {
+                return Db.Queryable<T>().Where(expression).ToPageList(pageIndex, pageSize).MapList<To>();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="expression">检索表达式</param>
+        /// <param name="pageIndex">页索引</param>
+        /// <param name="pageSize">页大小</param>
+        /// <returns></returns>
         public virtual List<T> GetList(Expressionable<T> expression, int pageIndex, int pageSize,ref int total)
         {
             if (expression == null)
@@ -187,6 +261,36 @@ namespace ducky_api_server.Core
                 throw;
             }
         }
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="expression">检索表达式</param>
+        /// <param name="pageIndex">页索引</param>
+        /// <param name="pageSize">页大小</param>
+        /// <returns></returns>
+        public virtual List<To> GetList<To>(Expressionable<T> expression, int pageIndex, int pageSize,ref int total) where To:class,new()
+        {
+            if (expression == null)
+            {
+                throw new ArgumentException("expression is null");
+            }
+            if (pageIndex <= 0)
+            {
+                pageIndex = 1;
+            }
+            if (pageSize <= 0)
+            {
+                pageSize = 30;
+            }
+            try
+            {
+                return Db.Queryable<T>().Where(expression.ToExpression()).ToPageList(pageIndex, pageSize,ref total).MapList<To>();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
         public virtual List<T> GetList(ISugarQueryable<T> expression,int pageIndex,int pageSize,ref int total)
         {
             if (expression == null)
@@ -204,6 +308,29 @@ namespace ducky_api_server.Core
             try
             {
                 return expression.ToPageList(pageIndex, pageSize,ref total);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+        public virtual List<To> GetList<To>(ISugarQueryable<T> expression,int pageIndex,int pageSize,ref int total) where To:class,new()
+        {
+            if (expression == null)
+            {
+                throw new ArgumentException("expression is null");
+            }
+              if (pageIndex <= 0)
+            {
+                pageIndex = 1;
+            }
+            if (pageSize <= 0)
+            {
+                pageSize = 30;
+            }
+            try
+            {
+                return expression.ToPageList(pageIndex, pageSize,ref total).MapList<To>();
             }
             catch (System.Exception)
             {

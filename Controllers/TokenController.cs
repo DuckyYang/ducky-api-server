@@ -1,6 +1,6 @@
 using ducky_api_server.Core;
-using ducky_api_server.Model;
-using ducky_api_server.Model.Users;
+using ducky_api_server.DTO;
+using ducky_api_server.DTO.Users;
 using ducky_api_server.Service.Users;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +16,14 @@ namespace ducky_api_server.Controllers
         }
         [HttpPost]
         [Route("")]
-        public ResponseModel SignIn([FromBody]UsersSignInModel model)
+        public ResponseDTO SignIn([FromBody]UsersSignInDTO model)
         {
             var (msg,user) = UsersService.SignIn(model.Account, model.Password);
             return user.IsNull() ? Fail(msg) : Success(user);
         }
         [HttpGet]
         [Route("{accesstoken}")]
-        public ResponseModel Verify(string accesstoken)
+        public ResponseDTO Verify(string accesstoken)
         {
             var user = UsersService.GetUser(accesstoken);
             return Success(user);

@@ -1,5 +1,5 @@
 using ducky_api_server.Repo;
-using ducky_api_server.Model.Servers;
+using ducky_api_server.DTO.Servers;
 using ducky_api_server.Core;
 using System.Collections.Generic;
 
@@ -14,7 +14,7 @@ namespace ducky_api_server.Service.Servers
             repo = new ServersRepo();
             userServersRepo = new UserServersRepo();
         }
-        public bool Add(ServersModel model)
+        public bool Add(ServersDTO model)
         {
             if (model.IsNull())
             {
@@ -56,12 +56,12 @@ namespace ducky_api_server.Service.Servers
             return repo.EnableServer(id);
         }
 
-        public List<ServersModel> GetList(QueryServersModel query)
+        public List<ServersDTO> GetList(QueryServersDTO query)
         {
             return repo.GetList(query);
         }
 
-        public bool Update(string id, ServersModel model)
+        public bool Update(string id, ServersDTO model)
         {
             if (id.IsEmpty() || model.IsNull())
             {

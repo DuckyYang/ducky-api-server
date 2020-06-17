@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using ducky_api_server.Model;
-using ducky_api_server.Model.Roles;
+using ducky_api_server.DTO;
 using ducky_api_server.Service.Roles;
 using ducky_api_server.Service.RolesAuth;
+using ducky_api_server.DTO.Roles;
 
 namespace ducky_api_server.Controllers
 {
@@ -18,21 +18,21 @@ namespace ducky_api_server.Controllers
         }
         [Route("")]
         [HttpGet]
-        public ResponseModel Get([FromQuery]QueryRolesModel query)
+        public ResponseDTO Get([FromQuery]QueryRolesDTO query)
         {
             var result = Service.GetList(query);
             return Success(result);
         }
         [Route("auths")]
         [HttpGet]
-        public ResponseModel GetRolesAuths()
+        public ResponseDTO GetRolesAuths()
         {
             var result = RolesAuthService.GetRolesAuths();
             return Success(result);
         }
         [Route("")]
         [HttpPost]
-        public ResponseModel Post([FromBody]RolesModel model)
+        public ResponseDTO Post([FromBody]RolesDTO model)
         {
             var result = Service.AddRole(model);
             return result ? Success(model) : Fail();

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ducky_api_server.Core;
+using ducky_api_server.DTO.UserServers;
 using ducky_api_server.Model.UserServers;
 
 namespace ducky_api_server.Repo
@@ -12,13 +13,14 @@ namespace ducky_api_server.Repo
             Db = new DbContext<UserServersModel>();
         }
 
-        public bool AddUserServers(List<UserServersModel> list)
+        public bool AddUserServers(List<UserServersDTO> list)
         {
-            return Db.InsertAll(list);
+            var models = list.MapList<UserServersModel>();
+            return Db.InsertAll(models);
         }
         public bool RemoveUserServer(string serverId)
         {
-            return Db.Delete(x=>x.server_id == serverId);
+            return Db.Delete(x => x.server_id == serverId);
         }
     }
 }

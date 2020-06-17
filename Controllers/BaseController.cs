@@ -1,4 +1,4 @@
-using ducky_api_server.Model;
+using ducky_api_server.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ducky_api_server.Controllers
@@ -6,9 +6,9 @@ namespace ducky_api_server.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        protected ResponseModel Success()
+        protected ResponseDTO Success()
         {
-            return new ResponseModel
+            return new ResponseDTO
             {
                 Code = 200,
                 Success = true,
@@ -18,9 +18,9 @@ namespace ducky_api_server.Controllers
                 Message = "请求成功"
             };
         }
-        protected ResponseModel Success(object obj)
+        protected ResponseDTO Success(object obj)
         {
-            return new ResponseModel
+            return new ResponseDTO
             {
                 Code = 200,
                 Success = true,
@@ -30,9 +30,9 @@ namespace ducky_api_server.Controllers
                 Message = "请求成功"
             };
         }
-        protected ResponseModel Success(object obj, long total)
+        protected ResponseDTO Success(object obj, long total)
         {
-            return new ResponseModel
+            return new ResponseDTO
             {
                 Code = 200,
                 Success = true,
@@ -42,9 +42,9 @@ namespace ducky_api_server.Controllers
                 Message = "请求成功"
             };
         }
-        protected ResponseModel Success(object obj, long total, long count)
+        protected ResponseDTO Success(object obj, long total, long count)
         {
-            return new ResponseModel
+            return new ResponseDTO
             {
                 Code = 200,
                 Success = true,
@@ -58,9 +58,9 @@ namespace ducky_api_server.Controllers
         /// 接口执行失败
         /// </summary>
         /// <returns></returns>
-        protected ResponseModel Fail()
+        protected ResponseDTO Fail()
         {
-            return new ResponseModel
+            return new ResponseDTO
             {
                 Code = 200,
                 Message = "请求失败",
@@ -75,9 +75,9 @@ namespace ducky_api_server.Controllers
         /// </summary>
         /// <param name="message">失败原因</param>
         /// <returns></returns>
-        protected ResponseModel Fail(string message)
+        protected ResponseDTO Fail(string message)
         {
-            return new ResponseModel
+            return new ResponseDTO
             {
                 Code = 200,
                 Message = message,

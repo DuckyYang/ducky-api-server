@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using ducky_api_server.Model;
+using ducky_api_server.DTO;
 using ducky_api_server.Service.Users;
-using ducky_api_server.Model.Users;
-using ducky_api_server.Model.UserServers;
+using ducky_api_server.DTO.Users;
 using ducky_api_server.Core;
+using ducky_api_server.DTO.UserServers;
 
 namespace ducky_api_server.Controllers
 {
@@ -19,42 +19,42 @@ namespace ducky_api_server.Controllers
      
         [HttpGet]
         [Route("")]
-        public ResponseModel Get([FromQuery] QueryUserModel query)
+        public ResponseDTO Get([FromQuery] QueryUserDTO query)
         {
             var result = UsersService.GetUsers(query);
             return Success(result, query.Total);
         }
         [HttpPost]
         [Route("")]
-        public ResponseModel Post([FromBody] UsersModel model)
+        public ResponseDTO Post([FromBody] UsersDTO model)
         {
             var result = UsersService.AddUser(model);
             return result.user.IsNull() ? Fail(result.msg) : Success(result.user);
         }
         [HttpPut]
         [Route("{id}")]
-        public ResponseModel Put(string id, [FromBody] UsersModel model)
+        public ResponseDTO Put(string id, [FromBody] UsersDTO model)
         {
             var result = UsersService.UpdateUser(id, model);
             return Success(result);
         }
         [HttpPut]
         [Route("{id}/locked")]
-        public ResponseModel UnLockUser(string id)
+        public ResponseDTO UnLockUser(string id)
         {
             var result = UsersService.UnLockUser(id);
             return Success(result);
         }
         [HttpPut]
         [Route("{id}/enabled")]
-        public ResponseModel EnableUser(string id)
+        public ResponseDTO EnableUser(string id)
         {
             var result = UsersService.EnableUser(id);
             return Success(result);
         }
         [HttpDelete]
         [Route("{id}")]
-        public ResponseModel RemoveUser(string id)
+        public ResponseDTO RemoveUser(string id)
         {
             var result = UsersService.RemoveUser(id);
             return result ? Success(id) : Fail();
@@ -62,7 +62,7 @@ namespace ducky_api_server.Controllers
 
         [HttpPost]
         [Route("{id}/servers")]
-        public ResponseModel AddUserServers(string id,[FromBody]List<UserServersModel> list)
+        public ResponseDTO AddUserServers(string id,[FromBody]List<UserServersDTO> list)
         {
             var result = UsersService.AddUserServers(id,list);
             return result ? Success() : Fail();

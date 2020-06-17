@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ducky_api_server.Core;
-using ducky_api_server.Model.Users;
-using ducky_api_server.Model.UserServers;
+using ducky_api_server.DTO.Users;
+using ducky_api_server.DTO.UserServers;
 using ducky_api_server.Repo;
 
 namespace ducky_api_server.Service.Users
@@ -17,11 +17,11 @@ namespace ducky_api_server.Service.Users
             userRepo = new UsersRepo();
             userServersRepo = new UserServersRepo();
         }
-        public List<UsersModel> GetUsers(QueryUserModel query)
+        public List<UsersDTO> GetUsers(QueryUserDTO query)
         {
             return userRepo.GetUsers(query).Select(r => { r.password = "***"; return r; }).ToList();
         }
-        public (string msg, UsersModel user) SignIn(string account, string password)
+        public (string msg, UsersDTO user) SignIn(string account, string password)
         {
             if (account.IsEmpty() || password.IsEmpty())
             {
@@ -39,20 +39,17 @@ namespace ducky_api_server.Service.Users
                     // 
                     if (user.errortimes > 8)
                     {
-                        user.locked = 1;
-                        user.errortimes = 0;
-                        userRepo.LockUser(user);
+                        userRepo.LockUser(user.id);
                         return ("密码错误次数过多,账户已被锁定,请联系管理员解锁!", null);
                     }
                     else
                     {
-                        userRepo.UpdateErrorTimes(user);
+                        userRepo.UpdateErrorTimes(user.id,user.errortimes);
                     }
                     return ("用户名或密码错误!", null);
                 }
                 user.accesstoken = GUID.New;
-                user.expired = DateTime.Now.AddDays(1);
-                userRepo.UpdateUserToken(user);
+                userRepo.UpdateUserToken(user.id,user.accesstoken);
 
                 user.password = "***";
                 return ("", user);
@@ -61,7 +58,7 @@ namespace ducky_api_server.Service.Users
             return ("用户名或密码错误!", null);
 
         }
-        public UsersModel GetUser(string accesstoken)
+        public UsersDTO GetUser(string accesstoken)
         {
             if (accesstoken.IsEmpty())
             {
@@ -71,7 +68,7 @@ namespace ducky_api_server.Service.Users
             user.password = "***";
             return user;
         }
-        public (UsersModel user, string msg) AddUser(UsersModel model)
+        public (UsersDTO user, string msg) AddUser(UsersDTO model)
         {
             if (model.IsNull() || model.name.IsEmpty() || model.email.IsEmpty() || model.password.IsEmpty() || model.role.IsEmpty())
             {
@@ -81,7 +78,7 @@ namespace ducky_api_server.Service.Users
             user.password = "***";
             return (user, "");
         }
-        public UsersModel UpdateUser(string id, UsersModel model)
+        public UsersDTO UpdateUser(string id, UsersDTO model)
         {
             if (model == null || id.IsEmpty())
             {
@@ -139,7 +136,7 @@ namespace ducky_api_server.Service.Users
             return success;
         }
 
-        public bool AddUserServers(string id,List<UserServersModel> list)
+        public bool AddUserServers(string id,List<UserServersDTO> list)
         {
             if (list.IsNull() || list.Count <= 0)
             {

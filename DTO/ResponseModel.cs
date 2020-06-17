@@ -1,6 +1,6 @@
-namespace ducky_api_server.Model
+namespace ducky_api_server.DTO
 {
-    public class ResponseModel
+    public class ResponseDTO
     {
         /// <summary>
         /// HttpStatus 
