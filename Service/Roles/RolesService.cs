@@ -1,20 +1,23 @@
 using System.Linq;
 using System.Collections.Generic;
-using ducky_api_server.Core;
 using ducky_api_server.DTO.Roles;
-using ducky_api_server.Repo;
+using ducky_api_server.Repo.RoleAuths;
+using ducky_api_server.Repo.Roles;
+using ducky_api_server.Repo.Menus;
+using ducky_api_server.Extensions;
+using ducky_api_server.DTO.RoleAuths;
 
 namespace ducky_api_server.Service.Roles
 {
     public class RolesService : IRolesService
     {
         private RolesRepo repo;
-        private RolesAuthRepo authRepo;
+        private RoleAuthsRepo authRepo;
         private MenusRepo menusRepo;
         public RolesService()
         {
             repo = new RolesRepo();
-            authRepo = new RolesAuthRepo();
+            authRepo = new RoleAuthsRepo();
             menusRepo = new MenusRepo();
         }
 
@@ -27,13 +30,28 @@ namespace ducky_api_server.Service.Roles
         {
             return repo.GetAll();
         }
+        public List<RoleAuthsDTO> GetRoleAuths()
+        {
+            var list = authRepo.GetRoleAuths();
+            
+            var menus = menusRepo.GetMenus();
+
+            list.ForEach(x =>
+            {
+                var menu = menus.FirstOrDefault(r => r.ID == x.MenuID);
+                x.Menu = menu?.Name;
+                x.MenuPath = menu?.Path;
+                x.Order = menu?.Order ?? 0;
+            });
+            return list.OrderBy(x=>x.Role).ThenBy(x=>x.Order).ToList();
+        }
         public bool AddRole(RolesDTO model)
         {
-            if (model.IsNull() || model.role.IsEmpty())
+            if (model.IsNull() || model.Role.IsEmpty())
             {
                 return false;
             }
-            var exists = !repo.GetRole(model.role).IsNull();
+            var exists = !repo.GetRole(model.Role).IsNull();
             if (exists)
             {
                 return false;
@@ -44,7 +62,7 @@ namespace ducky_api_server.Service.Roles
                 // get all menus 
                 var menus = menusRepo.GetMenus();
                 // add defaut menus auth
-                authRepo.AddDefault(model.role,menus.Select(x=>x.id).ToList());
+                authRepo.AddDefault(model.Role,menus.Select(x=>x.ID).ToList());
             }
             return success;
         }

@@ -1,10 +1,11 @@
 using ducky_api_server.Core;
 using ducky_api_server.DTO.Roles;
+using ducky_api_server.Extensions;
 using ducky_api_server.Model.Roles;
 using System;
 using System.Collections.Generic;
 
-namespace ducky_api_server.Repo
+namespace ducky_api_server.Repo.Roles
 {
     public class RolesRepo
     {
@@ -16,22 +17,22 @@ namespace ducky_api_server.Repo
 
         public List<RolesDTO> GetAll(int pageIndex,int pageSize)
         {
-            return Db.GetList(r=>r.enabled == 1,pageIndex,pageSize).MapList<RolesDTO>();
+            return Db.GetList<RolesDTO>(r=>r.Enabled == true,pageIndex,pageSize);
         }
 
         public List<RolesDTO> GetAll()
         {
-            return Db.GetAll().MapList<RolesDTO>();
+            return Db.GetAll<RolesDTO>();
         }
         public RolesDTO GetRole(string role)
         {
-            return Db.GetSingle(x=>x.role == role).Map<RolesDTO>();
+            return Db.GetSingle<RolesDTO>(x=>x.Role == role);
         }
 
         public bool AddRole(RolesDTO dto)
         {
             var model = dto.Map<RolesModel>();
-            model.enabled = 1;
+            model.Enabled = true;
             return Db.Insert(model);
         }
     }

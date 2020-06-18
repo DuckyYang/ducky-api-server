@@ -1,6 +1,6 @@
 using System;
 
-namespace ducky_api_server.Core
+namespace ducky_api_server.Extensions
 {
     public class GUID
     {

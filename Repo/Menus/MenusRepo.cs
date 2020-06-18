@@ -3,7 +3,7 @@ using ducky_api_server.Model.Menus;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ducky_api_server.Repo
+namespace ducky_api_server.Repo.Menus
 {
     public class MenusRepo
     {
@@ -15,7 +15,7 @@ namespace ducky_api_server.Repo
 
         public List<MenusModel> GetMenus()
         {
-            return Db.GetAll().OrderBy(r=>r.order).ToList();
+            return Db.GetAll().OrderBy(r=>r.Order).ToList();
         }
     }
 }

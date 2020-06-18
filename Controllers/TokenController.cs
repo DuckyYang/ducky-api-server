@@ -1,6 +1,7 @@
 using ducky_api_server.Core;
 using ducky_api_server.DTO;
 using ducky_api_server.DTO.Users;
+using ducky_api_server.Extensions;
 using ducky_api_server.Service.Users;
 using Microsoft.AspNetCore.Mvc;
 

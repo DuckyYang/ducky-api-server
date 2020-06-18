@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ducky_api_server.DTO.Documents;
 using ducky_api_server.DTO.Servers;
 
 namespace ducky_api_server.Service.Servers
@@ -11,5 +12,6 @@ namespace ducky_api_server.Service.Servers
         bool EnableServer(string id);
         bool DisableServer(string id);
         List<ServersDTO> GetList(QueryServersDTO query);
+        bool AddCollection(string id, DocumentsDTO dto);
     }
 }

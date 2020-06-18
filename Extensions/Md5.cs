@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ducky_api_server.Core
+namespace ducky_api_server.Extensions
 {
     public class Md5
     {

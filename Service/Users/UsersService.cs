@@ -1,62 +1,37 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ducky_api_server.Core;
 using ducky_api_server.DTO.Users;
 using ducky_api_server.DTO.UserServers;
-using ducky_api_server.Repo;
+using ducky_api_server.Extensions;
+using ducky_api_server.Repo.Users;
+using ducky_api_server.Repo.UserServers;
 
 namespace ducky_api_server.Service.Users
 {
     public class UsersService : IUsersService
     {
-        private UsersRepo userRepo;
+        private UsersRepo repo;
         private UserServersRepo userServersRepo;
         public UsersService()
         {
-            userRepo = new UsersRepo();
+            repo = new UsersRepo();
             userServersRepo = new UserServersRepo();
         }
         public List<UsersDTO> GetUsers(QueryUserDTO query)
         {
-            return userRepo.GetUsers(query).Select(r => { r.password = "***"; return r; }).ToList();
+            return repo.GetUsers(query);
         }
         public (string msg, UsersDTO user) SignIn(string account, string password)
         {
             if (account.IsEmpty() || password.IsEmpty())
             {
-                return ("用户名密码不能为空", null);
+                return (SystemMessage.AccountOrPasswordCanNotBeEmpty, null);
             }
             // 明文密码md5
             password = Md5.Encrypt(password.Trim(), 32);
-            var user = userRepo.GetUserByAccount(account);
-            if (!user.IsNull())
-            {
-                // 比较密码
-                if (password != user.password)
-                {
-                    user.errortimes++;
-                    // 
-                    if (user.errortimes > 8)
-                    {
-                        userRepo.LockUser(user.id);
-                        return ("密码错误次数过多,账户已被锁定,请联系管理员解锁!", null);
-                    }
-                    else
-                    {
-                        userRepo.UpdateErrorTimes(user.id,user.errortimes);
-                    }
-                    return ("用户名或密码错误!", null);
-                }
-                user.accesstoken = GUID.New;
-                userRepo.UpdateUserToken(user.id,user.accesstoken);
 
-                user.password = "***";
-                return ("", user);
-            }
-
-            return ("用户名或密码错误!", null);
-
+            return repo.UserSignIn(account, password);
         }
         public UsersDTO GetUser(string accesstoken)
         {
@@ -64,19 +39,17 @@ namespace ducky_api_server.Service.Users
             {
                 return null;
             }
-            var user = userRepo.GetUser(accesstoken);
-            user.password = "***";
+            var user = repo.GetUser(accesstoken);
             return user;
         }
-        public (UsersDTO user, string msg) AddUser(UsersDTO model)
+        public (string msg, UsersDTO user) AddUser(UsersDTO model)
         {
-            if (model.IsNull() || model.name.IsEmpty() || model.email.IsEmpty() || model.password.IsEmpty() || model.role.IsEmpty())
+            if (model.IsNull() || model.Name.IsEmpty() || model.Email.IsEmpty() || model.Role.IsEmpty())
             {
-                return (null, "缺少关键参数");
+                return (SystemMessage.MissingKeyParameters, null);
             }
-            var user = userRepo.AddUser(model);
-            user.password = "***";
-            return (user, "");
+            var user = repo.AddUser(model);
+            return ("", user);
         }
         public UsersDTO UpdateUser(string id, UsersDTO model)
         {
@@ -84,24 +57,23 @@ namespace ducky_api_server.Service.Users
             {
                 return null;
             }
-            model.id = id;
-            var user = userRepo.UpdateUser(model);
-            user.password = "***";
+            model.ID = id;
+            var user = repo.UpdateUser(model);
             return user;
         }
         public bool UnLockUser(string id)
         {
-            var user = userRepo.GetUserById(id);
+            var user = repo.GetUserById(id);
             if (!user.IsNull())
             {
                 bool success;
-                if (user.locked == 1)
+                if (user.Locked)
                 {
-                    success = userRepo.UnLockUser(id);
+                    success = repo.UnLockUser(id);
                 }
                 else
                 {
-                    success = userRepo.LockUser(id);
+                    success = repo.LockUser(id);
                 }
                 return success;
             }
@@ -109,17 +81,17 @@ namespace ducky_api_server.Service.Users
         }
         public bool EnableUser(string id)
         {
-            var user = userRepo.GetUserById(id);
+            var user = repo.GetUserById(id);
             if (!user.IsNull())
             {
                 bool success;
-                if (user.enabled == 1)
+                if (user.Enabled)
                 {
-                    success = userRepo.DisableUser(id);
+                    success = repo.DisableUser(id);
                 }
                 else
                 {
-                    success = userRepo.EnableUser(id);
+                    success = repo.EnableUser(id);
                 }
                 return success;
             }
@@ -127,29 +99,29 @@ namespace ducky_api_server.Service.Users
         }
         public bool UpdateRole(string id, string role)
         {
-            bool success = userRepo.UpdateRole(id, role);
+            bool success = repo.UpdateRole(id, role);
             return success;
         }
         public bool RemoveUser(string id)
         {
-            bool success = userRepo.RemoveUser(id);
+            bool success = repo.RemoveUser(id);
             return success;
         }
 
-        public bool AddUserServers(string id,List<UserServersDTO> list)
+        public bool AddUserServers(string id, List<UserServersDTO> list)
         {
             if (list.IsNull() || list.Count <= 0)
             {
                 return false;
             }
-            var user = userRepo.GetUserById(id);
+            var user = repo.GetUserById(id);
             if (user.IsNull())
             {
                 return false;
             }
             list.ForEach(x =>
             {
-                x.userid = user.id;
+                x.UserID = user.ID;
             });
             return userServersRepo.AddUserServers(list);
         }

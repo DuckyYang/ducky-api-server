@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using ducky_api_server.Extensions;
 using SqlSugar;
 
 namespace ducky_api_server.Core
@@ -443,5 +444,20 @@ namespace ducky_api_server.Core
             }
         }
 
+    }
+
+    public static class SugarExtensions
+    {
+        /// <summary>
+        /// 倒叙
+        /// </summary>
+        /// <param name="queryable"></param>
+        /// <param name="expression"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static ISugarQueryable<T> OrderByDescending<T>(this ISugarQueryable<T> queryable,Expression<Func<T, object>> expression)
+        {
+            return queryable.OrderBy(expression,OrderByType.Desc);
+        }
     }
 }

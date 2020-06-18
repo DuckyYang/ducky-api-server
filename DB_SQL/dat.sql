@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 17/06/2020 17:36:06
+ Date: 18/06/2020 16:05:47
 */
 
 SET NAMES utf8mb4;
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `dat_documents`;
 CREATE TABLE `dat_documents`  (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `server_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属服务id',
-  `collection` bit(2) NOT NULL COMMENT '是否是集合',
+  `collection` bit(1) NOT NULL COMMENT '是否是集合',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
   `path` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '路径，如Workflow,Task,Create',
   `method` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '请求方法：GET,POST,PUT,DELETE,OPTIONS',
@@ -89,35 +89,35 @@ CREATE TABLE `dat_role_auth`  (
   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `role` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `menuid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `view` tinyint(1) NOT NULL,
-  `operate` tinyint(1) NOT NULL,
+  `viewable` bit(1) NOT NULL,
+  `operable` bit(1) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dat_role_auth
 -- ----------------------------
-INSERT INTO `dat_role_auth` VALUES ('0E13CCCA016544D4AD878B96F74630A8', 'master', '9f654aa5ac7d11eabbc300ff17336a76', 0, 0);
-INSERT INTO `dat_role_auth` VALUES ('120AD1630E4D44D38AB4012620552787', 'master', '8ff56940ac7d11eabbc300ff17336a76', 0, 0);
-INSERT INTO `dat_role_auth` VALUES ('2200c41daf8e11ea999e00ff17336a76', 'admin', '5b819459ac7d11eabbc300ff17336a76', 1, 1);
-INSERT INTO `dat_role_auth` VALUES ('2200d5f5af8e11ea999e00ff17336a76', 'admin', '72dce7bbac7d11eabbc300ff17336a76', 1, 1);
-INSERT INTO `dat_role_auth` VALUES ('2200e7f3af8e11ea999e00ff17336a76', 'admin', '7a3ee3e3ac7d11eabbc300ff17336a76', 1, 1);
-INSERT INTO `dat_role_auth` VALUES ('2200e8a4af8e11ea999e00ff17336a76', 'admin', '8ff56940ac7d11eabbc300ff17336a76', 1, 1);
-INSERT INTO `dat_role_auth` VALUES ('2200e94baf8e11ea999e00ff17336a76', 'admin', '94bb32ccac7d11eabbc300ff17336a76', 1, 1);
-INSERT INTO `dat_role_auth` VALUES ('2200e9afaf8e11ea999e00ff17336a76', 'admin', '996c4e1fac7d11eabbc300ff17336a76', 1, 1);
-INSERT INTO `dat_role_auth` VALUES ('2200ea0baf8e11ea999e00ff17336a76', 'admin', '9f654aa5ac7d11eabbc300ff17336a76', 1, 1);
-INSERT INTO `dat_role_auth` VALUES ('27287d58af8e11ea999e00ff17336a76', 'user', '5b819459ac7d11eabbc300ff17336a76', 1, 0);
-INSERT INTO `dat_role_auth` VALUES ('27288c7daf8e11ea999e00ff17336a76', 'user', '72dce7bbac7d11eabbc300ff17336a76', 1, 0);
-INSERT INTO `dat_role_auth` VALUES ('27288d38af8e11ea999e00ff17336a76', 'user', '7a3ee3e3ac7d11eabbc300ff17336a76', 1, 0);
-INSERT INTO `dat_role_auth` VALUES ('27288dccaf8e11ea999e00ff17336a76', 'user', '8ff56940ac7d11eabbc300ff17336a76', 1, 0);
-INSERT INTO `dat_role_auth` VALUES ('27288e59af8e11ea999e00ff17336a76', 'user', '94bb32ccac7d11eabbc300ff17336a76', 1, 0);
-INSERT INTO `dat_role_auth` VALUES ('27288eb8af8e11ea999e00ff17336a76', 'user', '996c4e1fac7d11eabbc300ff17336a76', 1, 0);
-INSERT INTO `dat_role_auth` VALUES ('27288f0eaf8e11ea999e00ff17336a76', 'user', '9f654aa5ac7d11eabbc300ff17336a76', 1, 0);
-INSERT INTO `dat_role_auth` VALUES ('583198FA85964D9AAB2D499C30E8C10C', 'master', '72dce7bbac7d11eabbc300ff17336a76', 1, 1);
-INSERT INTO `dat_role_auth` VALUES ('685F9B209AFF4E93BC134A37A763EA43', 'master', '996c4e1fac7d11eabbc300ff17336a76', 0, 0);
-INSERT INTO `dat_role_auth` VALUES ('A3D265B18CAE4CC88A06B71645E44A59', 'master', '5b819459ac7d11eabbc300ff17336a76', 0, 0);
-INSERT INTO `dat_role_auth` VALUES ('CD9812C52BA441889C543F9DEDEA0D7C', 'master', '7a3ee3e3ac7d11eabbc300ff17336a76', 1, 0);
-INSERT INTO `dat_role_auth` VALUES ('D3F264BDA72A4C1F8AD2CCE76FE7DA99', 'master', '94bb32ccac7d11eabbc300ff17336a76', 0, 0);
+INSERT INTO `dat_role_auth` VALUES ('0E13CCCA016544D4AD878B96F74630A8', 'master', '9f654aa5ac7d11eabbc300ff17336a76', b'0', b'0');
+INSERT INTO `dat_role_auth` VALUES ('120AD1630E4D44D38AB4012620552787', 'master', '8ff56940ac7d11eabbc300ff17336a76', b'0', b'0');
+INSERT INTO `dat_role_auth` VALUES ('2200c41daf8e11ea999e00ff17336a76', 'admin', '5b819459ac7d11eabbc300ff17336a76', b'1', b'1');
+INSERT INTO `dat_role_auth` VALUES ('2200d5f5af8e11ea999e00ff17336a76', 'admin', '72dce7bbac7d11eabbc300ff17336a76', b'1', b'1');
+INSERT INTO `dat_role_auth` VALUES ('2200e7f3af8e11ea999e00ff17336a76', 'admin', '7a3ee3e3ac7d11eabbc300ff17336a76', b'1', b'1');
+INSERT INTO `dat_role_auth` VALUES ('2200e8a4af8e11ea999e00ff17336a76', 'admin', '8ff56940ac7d11eabbc300ff17336a76', b'1', b'1');
+INSERT INTO `dat_role_auth` VALUES ('2200e94baf8e11ea999e00ff17336a76', 'admin', '94bb32ccac7d11eabbc300ff17336a76', b'1', b'1');
+INSERT INTO `dat_role_auth` VALUES ('2200e9afaf8e11ea999e00ff17336a76', 'admin', '996c4e1fac7d11eabbc300ff17336a76', b'1', b'1');
+INSERT INTO `dat_role_auth` VALUES ('2200ea0baf8e11ea999e00ff17336a76', 'admin', '9f654aa5ac7d11eabbc300ff17336a76', b'1', b'1');
+INSERT INTO `dat_role_auth` VALUES ('27287d58af8e11ea999e00ff17336a76', 'user', '5b819459ac7d11eabbc300ff17336a76', b'1', b'0');
+INSERT INTO `dat_role_auth` VALUES ('27288c7daf8e11ea999e00ff17336a76', 'user', '72dce7bbac7d11eabbc300ff17336a76', b'1', b'0');
+INSERT INTO `dat_role_auth` VALUES ('27288d38af8e11ea999e00ff17336a76', 'user', '7a3ee3e3ac7d11eabbc300ff17336a76', b'1', b'0');
+INSERT INTO `dat_role_auth` VALUES ('27288dccaf8e11ea999e00ff17336a76', 'user', '8ff56940ac7d11eabbc300ff17336a76', b'1', b'0');
+INSERT INTO `dat_role_auth` VALUES ('27288e59af8e11ea999e00ff17336a76', 'user', '94bb32ccac7d11eabbc300ff17336a76', b'1', b'0');
+INSERT INTO `dat_role_auth` VALUES ('27288eb8af8e11ea999e00ff17336a76', 'user', '996c4e1fac7d11eabbc300ff17336a76', b'1', b'0');
+INSERT INTO `dat_role_auth` VALUES ('27288f0eaf8e11ea999e00ff17336a76', 'user', '9f654aa5ac7d11eabbc300ff17336a76', b'1', b'0');
+INSERT INTO `dat_role_auth` VALUES ('583198FA85964D9AAB2D499C30E8C10C', 'master', '72dce7bbac7d11eabbc300ff17336a76', b'1', b'1');
+INSERT INTO `dat_role_auth` VALUES ('685F9B209AFF4E93BC134A37A763EA43', 'master', '996c4e1fac7d11eabbc300ff17336a76', b'0', b'0');
+INSERT INTO `dat_role_auth` VALUES ('A3D265B18CAE4CC88A06B71645E44A59', 'master', '5b819459ac7d11eabbc300ff17336a76', b'0', b'0');
+INSERT INTO `dat_role_auth` VALUES ('CD9812C52BA441889C543F9DEDEA0D7C', 'master', '7a3ee3e3ac7d11eabbc300ff17336a76', b'1', b'1');
+INSERT INTO `dat_role_auth` VALUES ('D3F264BDA72A4C1F8AD2CCE76FE7DA99', 'master', '94bb32ccac7d11eabbc300ff17336a76', b'0', b'0');
 
 -- ----------------------------
 -- Table structure for dat_servers
@@ -163,8 +163,8 @@ CREATE TABLE `dat_user`  (
 -- Records of dat_user
 -- ----------------------------
 INSERT INTO `dat_user` VALUES ('1DA3F486B85C490DA3B58C05979AF8B5', 'Xu Xiang', 'd064cf3d3e6e493f4cc40d1f698d2544', 'user', '2020-06-13 14:08:48', 'xx7057@cnki.net', '13146526301', b'1', b'0', '', '2020-06-16 18:32:19.176262', 0);
-INSERT INTO `dat_user` VALUES ('a856d22faba311eabbc300ff17336a76', 'Ducky Yang', 'fe0ec45240b7d9cbb10653004a4075e9', 'admin', '2020-06-11 13:23:18', 'duckyyang@vip.qq.com', '18511284334', b'1', b'0', '38F5E8993719480EBBC3260A91496D30', '2020-06-13 12:47:40.846001', 0);
-INSERT INTO `dat_user` VALUES ('CB531F03B8B94E9DBA1F85EF9736A10A', 'Gao Lidong', 'e10adc3949ba59abbe56e057f20f883e', 'master', '2020-06-11 17:59:20', 'gld@cnki.net', '18511803221', b'1', b'0', '18754863CA324AF2BCA758223861B318', '2020-06-16 18:31:16.646521', 0);
+INSERT INTO `dat_user` VALUES ('a856d22faba311eabbc300ff17336a76', 'Ducky Yang', 'fe0ec45240b7d9cbb10653004a4075e9', 'admin', '2020-06-11 13:23:18', 'duckyyang@vip.qq.com', '18511284334', b'1', b'0', '692F9764CF664E7C8E3434F60DC7FA58', '2020-06-18 12:41:18.511121', 0);
+INSERT INTO `dat_user` VALUES ('CB531F03B8B94E9DBA1F85EF9736A10A', 'Gao Lidong', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '2020-06-11 17:59:20', 'gld11298@cnki.net', '18511803221', b'1', b'0', '18754863CA324AF2BCA758223861B318', '2020-06-18 14:25:29.444625', 0);
 
 -- ----------------------------
 -- Table structure for dat_user_servers

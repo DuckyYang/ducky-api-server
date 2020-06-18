@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ducky_api_server.Framework;
+using ducky_api_server.Service;
 
 namespace ducky_api_server
 {
@@ -31,7 +32,8 @@ namespace ducky_api_server
                 options.JsonSerializerOptions.IgnoreNullValues = true;
                 options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
             });
-            services.RegisteAll();
+            // registe all services to ioc container
+            ServiceRegisteTask.Resite(services);
         }
 
 

@@ -7,17 +7,17 @@ namespace ducky_api_server.Model.Users
     public class UsersModel
     {
         [SugarColumn(IsPrimaryKey=true)]
-        public string id { get; set; } 
-        public string name { get; set; } 
-        public string password { get; set; } 
-        public string role { get; set; } 
-        public string email { get; set; } 
-        public string mobile { get; set; } = "";
-        public DateTime inserttime { get; set; } 
-        public int enabled { get; set; } = 1;
-        public int locked { get; set; } = 0;
-        public string accesstoken { get; set; } = "";
-        public DateTime expired { get; set; }
-        public int errortimes { get; set; }
+        public string ID { get; set; } 
+        public string Name { get; set; } 
+        public string Password { get; set; } 
+        public string Role { get; set; } 
+        public string Email { get; set; } 
+        public string Mobile { get; set; } = "";
+        public DateTime InsertTime { get; set; } 
+        public bool Enabled { get; set; } = true;
+        public bool Locked { get; set; } = false;
+        public string Accesstoken { get; set; } = "";
+        public DateTime Expired { get; set; }
+        public int ErrorTimes { get; set; }
     }
 }

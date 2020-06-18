@@ -1,21 +1,12 @@
-using ducky_api_server.Service.Users;
-using ducky_api_server.Service.Roles;
-using ducky_api_server.Service.Menus;
-using ducky_api_server.Service.RolesAuth;
-using ducky_api_server.Service.Servers;
-using Microsoft.Extensions.DependencyInjection;
+
 
 namespace ducky_api_server.Framework
 {
-    public static class ServiceRegisteTask
+    public class FrameWork
     {
-        public static void RegisteAll(this IServiceCollection services)
-        {
-            services.AddSingleton<IUsersService,UsersService>();
-            services.AddSingleton<IRolesService,RolesService>();
-            services.AddSingleton<IMenusService,MenusService>();
-            services.AddSingleton<IRolesAuthService,RolesAuthService>();
-            services.AddSingleton<IServersService,ServersService>();
-        }
+       public static bool Start()
+       {
+           return true;
+       }
     }
 }

@@ -6,8 +6,9 @@ namespace ducky_api_server.Model.UserServers
     public class UserServersModel
     {
         [SugarColumn(IsPrimaryKey=true)]
-        public string id { get; set; }
-        public string userid { get; set; }
-        public string server_id { get; set; }
+        public string ID { get; set; }
+        public string UserID { get; set; }
+        [SugarColumn(ColumnName="server_id")]
+        public string ServerID { get; set; }
     }
 }

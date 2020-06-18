@@ -1,18 +1,23 @@
-using ducky_api_server.Repo;
+using ducky_api_server.Repo.Documents;
 using ducky_api_server.DTO.Servers;
-using ducky_api_server.Core;
 using System.Collections.Generic;
+using ducky_api_server.DTO.Documents;
+using ducky_api_server.Repo.Servers;
+using ducky_api_server.Repo.UserServers;
+using ducky_api_server.Extensions;
 
 namespace ducky_api_server.Service.Servers
 {
     public class ServersService : IServersService
     {
         private ServersRepo repo;
+        private DocumentsRepo documentsRepo;
         private UserServersRepo userServersRepo;
         public ServersService()
         {
             repo = new ServersRepo();
             userServersRepo = new UserServersRepo();
+            documentsRepo = new DocumentsRepo();
         }
         public bool Add(ServersDTO model)
         {
@@ -69,6 +74,14 @@ namespace ducky_api_server.Service.Servers
             }
             model.ID = id;
             return repo.Update(model);
+        }
+        public bool AddCollection(string id, DocumentsDTO dto)
+        {
+            if (dto.IsNull() || dto.Name.IsEmpty())
+            {
+                return false;
+            }
+            return documentsRepo.AddCollection(id,dto.Name);
         }
     }
 }

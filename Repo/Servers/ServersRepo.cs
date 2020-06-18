@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using ducky_api_server.Core;
 using ducky_api_server.DTO.Servers;
+using ducky_api_server.Extensions;
 using ducky_api_server.Model.Servers;
 using SqlSugar;
 
-namespace ducky_api_server.Repo
+namespace ducky_api_server.Repo.Servers
 {
     public class ServersRepo
     {

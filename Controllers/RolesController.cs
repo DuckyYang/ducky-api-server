@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ducky_api_server.DTO;
 using ducky_api_server.Service.Roles;
-using ducky_api_server.Service.RolesAuth;
+using ducky_api_server.Service.RoleAuths;
 using ducky_api_server.DTO.Roles;
 
 namespace ducky_api_server.Controllers
@@ -10,8 +10,8 @@ namespace ducky_api_server.Controllers
     public class RolesController:BaseController
     {
         private IRolesService Service;
-        private IRolesAuthService RolesAuthService;
-        public RolesController(IRolesService service,IRolesAuthService rolesAuthService)
+        private IRoleAuthsService RolesAuthService;
+        public RolesController(IRolesService service,IRoleAuthsService rolesAuthService)
         {
             Service = service;
             RolesAuthService = rolesAuthService;
@@ -25,9 +25,9 @@ namespace ducky_api_server.Controllers
         }
         [Route("auths")]
         [HttpGet]
-        public ResponseDTO GetRolesAuths()
+        public ResponseDTO GetRoleAuths()
         {
-            var result = RolesAuthService.GetRolesAuths();
+            var result = Service.GetRoleAuths();
             return Success(result);
         }
         [Route("")]

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using ducky_api_server.Repo;
+using ducky_api_server.Repo.Menus;
 using ducky_api_server.Model.Menus;
 
 namespace ducky_api_server.Service.Menus

@@ -5,6 +5,7 @@ using ducky_api_server.Service.Users;
 using ducky_api_server.DTO.Users;
 using ducky_api_server.Core;
 using ducky_api_server.DTO.UserServers;
+using ducky_api_server.Extensions;
 
 namespace ducky_api_server.Controllers
 {

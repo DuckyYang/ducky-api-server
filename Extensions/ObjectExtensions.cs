@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 
-namespace ducky_api_server.Core
+namespace ducky_api_server.Extensions
 {
     public static class ObjectExtensions
     {

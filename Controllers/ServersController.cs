@@ -2,6 +2,7 @@ using ducky_api_server.DTO;
 using ducky_api_server.DTO.Servers;
 using ducky_api_server.Service.Servers;
 using Microsoft.AspNetCore.Mvc;
+using ducky_api_server.DTO.Documents;
 
 namespace ducky_api_server.Controllers
 {
@@ -54,6 +55,14 @@ namespace ducky_api_server.Controllers
         public ResponseDTO Disable(string id)
         {
             var result = Service.DisableServer(id);
+            return result ? Success() : Fail();
+        }
+
+        [HttpPost]
+        [Route("{id}/collection")]
+        public ResponseDTO AddCollection(string id, [FromBody]DocumentsDTO dto)
+        {
+            var result = Service.AddCollection(id,dto);
             return result ? Success() : Fail();
         }
     }

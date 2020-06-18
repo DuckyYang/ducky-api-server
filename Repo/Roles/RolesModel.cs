@@ -6,7 +6,7 @@ namespace ducky_api_server.Model.Roles
     public class RolesModel
     {
         [SugarColumn(IsPrimaryKey=true)]
-        public string role { get; set; }
-        public int enabled { get; set; }
+        public string Role { get; set; }
+        public bool Enabled { get; set; }
     }
 }

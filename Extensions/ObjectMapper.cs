@@ -1,10 +1,11 @@
+using System.Security.AccessControl;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace ducky_api_server.Core
+namespace ducky_api_server.Extensions
 {
     public static class ObjectMapper
     {
@@ -97,6 +98,11 @@ namespace ducky_api_server.Core
                 var toProperty = toPis.FirstOrDefault(r => r.Name == fromProperty.Name);
                 if (!toProperty.IsNull())
                 {
+                    var ignore = (IgnoreMapAttribute)(toProperty.GetCustomAttributes(typeof(IgnoreMapAttribute), true).FirstOrDefault());
+                    if (ignore != null && ignore.Ignore)
+                    {
+                        continue;
+                    }
                     if (!toProperty.CanWrite)
                     {
                         continue;
@@ -225,6 +231,22 @@ namespace ducky_api_server.Core
                 default:
                     break;
             }
+        }
+    }
+
+    /// <summary>
+    /// ignore mapping when using ObjectMapper.Map method
+    /// </summary>
+    public class IgnoreMapAttribute:Attribute
+    {
+        public bool Ignore { get; set; }
+        /// <summary>
+        /// ignore mapping when using ObjectMapper.Map method
+        /// </summary>
+        /// <param name="ignore"></param>
+        public IgnoreMapAttribute(bool ignore = true)
+        {
+            Ignore = ignore;
         }
     }
 }
