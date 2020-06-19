@@ -115,6 +115,22 @@ namespace ducky_api_server.Core
                 throw;
             }
         }
+         /// <summary>
+        /// 获取所有数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual List<To> GetAll<To>(Expression<Func<T,bool>> predicate) where To:class,new()
+        {
+            try
+            {
+                return Db.Queryable<T>().Where(predicate).ToList().MapList<To>();
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
         /// <summary>
         /// 获取数据
         /// </summary>

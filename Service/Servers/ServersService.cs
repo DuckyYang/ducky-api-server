@@ -75,13 +75,54 @@ namespace ducky_api_server.Service.Servers
             model.ID = id;
             return repo.Update(model);
         }
-        public bool AddCollection(string id, DocumentsDTO dto)
+        public bool AddCollection(string id, DocumentAddDTO dto)
         {
             if (dto.IsNull() || dto.Name.IsEmpty())
             {
                 return false;
             }
-            return documentsRepo.AddCollection(id,dto.Name);
+            var server = repo.Get(id);
+            if (server.IsNull())
+            {
+                return false;
+            }
+            string path = $"{server.Name},{dto.Name}";
+            return documentsRepo.AddCollection(id,dto.Name,path);
+        }
+
+        public bool AddRequestToServer(string id, DocumentAddDTO dto)
+        {
+            if (id.IsEmpty() || dto.IsNull() || dto.Name.IsEmpty())
+            {   
+                return false;                
+            }
+            var server = repo.Get(id);
+            if (server.IsNull())
+            {
+                return false;
+            }
+            string path = $"{server.Name},{dto.Name}";
+            return documentsRepo.AddRequestToServer(id,dto.Name,path);
+        }
+
+        public bool AddRequestToCollection(string id, string collectionId, DocumentAddDTO dto)
+        {
+            if (id.IsEmpty() || collectionId.IsEmpty() || dto.IsNull() || dto.Name.IsEmpty())
+            {   
+                return false;                
+            }
+            var server = repo.Get(id);
+            if (server.IsNull())
+            {
+                return false;
+            }
+            var collection = documentsRepo.Get(collectionId);
+            if (collection.IsNull())
+            {
+                return false;
+            }
+            string path = $"{server.Name},{collection.Name},{dto.Name}";
+            return documentsRepo.AddRequestToCollection(id,collectionId,dto.Name,path);
         }
     }
 }

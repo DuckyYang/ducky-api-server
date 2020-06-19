@@ -3,6 +3,9 @@ namespace ducky_api_server.DTO.Documents
     public class DocumentsDTO
     {
         public string ID { get; set; }
+        public string ServerID { get; set; }
+        public bool Collection { get; set; }
+        public string CollectionID { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
         public string Method { get; set; }

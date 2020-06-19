@@ -60,9 +60,23 @@ namespace ducky_api_server.Controllers
 
         [HttpPost]
         [Route("{id}/collection")]
-        public ResponseDTO AddCollection(string id, [FromBody]DocumentsDTO dto)
+        public ResponseDTO AddCollection(string id, [FromBody] DocumentAddDTO dto)
         {
-            var result = Service.AddCollection(id,dto);
+            var result = Service.AddCollection(id, dto);
+            return result ? Success() : Fail();
+        }
+        [HttpPost]
+        [Route("{id}/request")]
+        public ResponseDTO AddRequestToServer(string id, [FromBody] DocumentAddDTO dto)
+        {
+            var result = Service.AddRequestToServer(id, dto);
+            return result ? Success() : Fail();
+        }
+        [HttpPost]
+        [Route("{id}/{collectionId}/request")]
+        public ResponseDTO AddRequestToCollection(string id, string collectionId, [FromBody] DocumentAddDTO dto)
+        {
+            var result = Service.AddRequestToCollection(id, collectionId, dto);
             return result ? Success() : Fail();
         }
     }

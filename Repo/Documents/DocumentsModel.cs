@@ -10,6 +10,8 @@ namespace ducky_api_server.Model.Documents
         [SugarColumn(ColumnName="server_id")]
         public string ServerID { get; set; }
         public bool Collection { get; set; }
+        [SugarColumn(ColumnName="collection_id")]
+        public string CollectionID { get; set; } = "";
         public string Name { get; set; }
         public string Path { get; set; } = "";
         public string Method { get; set; } = "";
