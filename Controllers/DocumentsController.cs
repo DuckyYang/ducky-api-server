@@ -31,12 +31,10 @@ namespace ducky_api_server.Controllers
 
         [Route("{id}")]
         [HttpDelete]
-        public ResponseDTO Update(string id)
+        public ResponseDTO Remove(string id)
         {
             var result = Service.Remove(id);
             return Success(result);
         }
-
-
     }
 }

@@ -9,5 +9,8 @@ namespace ducky_api_server.DTO.Documents
         public bool IsCollection { get; set; }
         public bool IsServer { get; set; }
         public DocumentsDTO Document { get; set; }
+
+        public string ServerID { get; set; }
+        public string CollectionID { get; set; }
     }
 }
