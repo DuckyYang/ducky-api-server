@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using ducky_api_server.DTO.Documents;
 using ducky_api_server.Repo.Servers;
 using ducky_api_server.Repo.UserServers;
+using ducky_api_server.Repo.Collections;
 using ducky_api_server.Extensions;
 
 namespace ducky_api_server.Service.Servers
@@ -13,11 +14,13 @@ namespace ducky_api_server.Service.Servers
         private ServersRepo repo;
         private DocumentsRepo documentsRepo;
         private UserServersRepo userServersRepo;
+        private CollectionsRepo collectionsRepo;
         public ServersService()
         {
             repo = new ServersRepo();
             userServersRepo = new UserServersRepo();
             documentsRepo = new DocumentsRepo();
+            collectionsRepo = new CollectionsRepo();
         }
         public bool Add(ServersDTO model)
         {
@@ -75,9 +78,9 @@ namespace ducky_api_server.Service.Servers
             model.ID = id;
             return repo.Update(model);
         }
-        public bool AddCollection(string id, DocumentAddDTO dto)
+        public bool AddCollection(string id, string name)
         {
-            if (dto.IsNull() || dto.Name.IsEmpty())
+            if (name.IsEmpty())
             {
                 return false;
             }
@@ -86,43 +89,8 @@ namespace ducky_api_server.Service.Servers
             {
                 return false;
             }
-            string path = $"{server.Name},{dto.Name}";
-            return documentsRepo.AddCollection(id,dto.Name,path);
+            return collectionsRepo.Add(server.ID,name);
         }
-
-        public bool AddRequestToServer(string id, DocumentAddDTO dto)
-        {
-            if (id.IsEmpty() || dto.IsNull() || dto.Name.IsEmpty())
-            {   
-                return false;                
-            }
-            var server = repo.Get(id);
-            if (server.IsNull())
-            {
-                return false;
-            }
-            string path = $"{server.Name},{dto.Name}";
-            return documentsRepo.AddRequestToServer(id,dto.Name,path);
-        }
-
-        public bool AddRequestToCollection(string id, string collectionId, DocumentAddDTO dto)
-        {
-            if (id.IsEmpty() || collectionId.IsEmpty() || dto.IsNull() || dto.Name.IsEmpty())
-            {   
-                return false;                
-            }
-            var server = repo.Get(id);
-            if (server.IsNull())
-            {
-                return false;
-            }
-            var collection = documentsRepo.Get(collectionId);
-            if (collection.IsNull())
-            {
-                return false;
-            }
-            string path = $"{server.Name},{collection.Name},{dto.Name}";
-            return documentsRepo.AddRequestToCollection(id,collectionId,dto.Name,path);
-        }
+      
     }
 }
