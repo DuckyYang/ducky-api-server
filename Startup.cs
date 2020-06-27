@@ -29,7 +29,7 @@ namespace ducky_api_server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddJsonOptions(options=>{
-                options.JsonSerializerOptions.IgnoreNullValues = true;
+                // options.JsonSerializerOptions.IgnoreNullValues = true;
                 options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
             });
             // registe all services to ioc container

@@ -2,7 +2,7 @@ using ducky_api_server.DTO;
 using ducky_api_server.DTO.Servers;
 using ducky_api_server.Service.Servers;
 using Microsoft.AspNetCore.Mvc;
-using ducky_api_server.DTO.Documents;
+using ducky_api_server.DTO.Request;
 
 namespace ducky_api_server.Controllers
 {
@@ -60,23 +60,9 @@ namespace ducky_api_server.Controllers
 
         [HttpPost]
         [Route("{id}/collection")]
-        public ResponseDTO AddCollection(string id, [FromBody] DocumentAddDTO dto)
+        public ResponseDTO AddCollection(string id, [FromBody] RequestAddDTO dto)
         {
-            var result = Service.AddCollection(id, dto);
-            return result ? Success() : Fail();
-        }
-        [HttpPost]
-        [Route("{id}/request")]
-        public ResponseDTO AddRequestToServer(string id, [FromBody] DocumentAddDTO dto)
-        {
-            var result = Service.AddRequestToServer(id, dto);
-            return result ? Success() : Fail();
-        }
-        [HttpPost]
-        [Route("{id}/{collectionId}/request")]
-        public ResponseDTO AddRequestToCollection(string id, string collectionId, [FromBody] DocumentAddDTO dto)
-        {
-            var result = Service.AddRequestToCollection(id, collectionId, dto);
+            var result = Service.AddCollection(id, dto.Name);
             return result ? Success() : Fail();
         }
     }

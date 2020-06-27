@@ -1,7 +1,7 @@
-using ducky_api_server.Repo.Documents;
+using ducky_api_server.Repo.Request;
 using ducky_api_server.DTO.Servers;
 using System.Collections.Generic;
-using ducky_api_server.DTO.Documents;
+using ducky_api_server.DTO.Request;
 using ducky_api_server.Repo.Servers;
 using ducky_api_server.Repo.UserServers;
 using ducky_api_server.Repo.Collections;
@@ -11,17 +11,10 @@ namespace ducky_api_server.Service.Servers
 {
     public class ServersService : IServersService
     {
-        private ServersRepo repo;
-        private DocumentsRepo documentsRepo;
-        private UserServersRepo userServersRepo;
-        private CollectionsRepo collectionsRepo;
-        public ServersService()
-        {
-            repo = new ServersRepo();
-            userServersRepo = new UserServersRepo();
-            documentsRepo = new DocumentsRepo();
-            collectionsRepo = new CollectionsRepo();
-        }
+        private ServersRepo repo = new ServersRepo();
+        private RequestRepo documentsRepo = new RequestRepo();
+        private UserServersRepo userServersRepo = new UserServersRepo();
+        private CollectionsRepo collectionsRepo = new CollectionsRepo();
         public bool Add(ServersDTO model)
         {
             if (model.IsNull())

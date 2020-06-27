@@ -1,9 +1,10 @@
+using System;
 using SqlSugar;
 
-namespace ducky_api_server.Model.Documents
+namespace ducky_api_server.Model.Request
 {
-    [SugarTable("dat_documents")]
-    public class DocumentsModel
+    [SugarTable("dat_request")]
+    public class RequestModel
     {
         [SugarColumn(IsPrimaryKey=true)]
         public string ID { get; set; }
@@ -12,13 +13,10 @@ namespace ducky_api_server.Model.Documents
         public string Name { get; set; }
         public string Method { get; set; } = "";
         public string Address { get; set; } = "";
-        public string Headers { get; set; } = "";
         [SugarColumn(ColumnName="content_type")]
         public string ContentType { get; set; } = "";
-        [SugarColumn(ColumnName="params")]
-        public string Parameters { get; set; } = "";
-        public string Body { get; set; } = "";
         public string Json { get; set; } = "";
         public string Response { get; set; } = "";
+        public DateTime InsertTime { get; set; }
     }
 }

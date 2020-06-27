@@ -46,5 +46,9 @@ namespace ducky_api_server.Repo.Collections
         {
             return Db.GetAll().OrderBy(x=>x.InsertTime).MapList<CollectionsDTO>();
         }
+        public bool Remove(string id)
+        {
+            return Db.Delete(x=>x.ID == id);
+        }
     }
 }

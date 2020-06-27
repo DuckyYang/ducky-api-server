@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using ducky_api_server.DTO;
-using ducky_api_server.Service.Documents;
-using ducky_api_server.DTO.Documents;
+using ducky_api_server.Service.Request;
+using ducky_api_server.DTO.Request;
 
 namespace ducky_api_server.Controllers
 {
     [Route("[controller]")]
-    public class DocumentsController : BaseController
+    public class RequestController : BaseController
     {
-        private IDocumentsService Service;
-        public DocumentsController(IDocumentsService service)
+        private IRequestService Service;
+        public RequestController(IRequestService service)
         {
             Service = service;
         }
@@ -23,7 +23,7 @@ namespace ducky_api_server.Controllers
         }
         [Route("{id}")]
         [HttpPut]
-        public ResponseDTO Update(string id, [FromBody] DocumentsDTO dto)
+        public ResponseDTO Update(string id, [FromBody] RequestDTO dto)
         {
             var result = Service.Update(id, dto);
             return Success(result);
@@ -34,6 +34,13 @@ namespace ducky_api_server.Controllers
         public ResponseDTO Remove(string id)
         {
             var result = Service.Remove(id);
+            return Success(result);
+        }
+        [Route("{id}/name")]
+        [HttpPut]
+        public ResponseDTO Rename(string id,[FromBody] RequestDTO dto)
+        {
+            var result = Service.Rename(id,dto.Name);
             return Success(result);
         }
     }
