@@ -9,5 +9,6 @@ namespace ducky_api_server.Service.Request
         bool Update(string id, RequestDTO dto);
         bool Remove(string id);
         bool Rename(string id, string name);
+        (bool success, string msg) Send(string id);
     }
 }

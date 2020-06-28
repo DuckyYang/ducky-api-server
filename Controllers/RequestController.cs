@@ -43,5 +43,13 @@ namespace ducky_api_server.Controllers
             var result = Service.Rename(id,dto.Name);
             return Success(result);
         }
+
+        [Route("{id}/send")]
+        [HttpGet]
+        public ResponseDTO Send(string id)
+        {
+            var result = Service.Send(id);
+            return result.success ? Success(result.msg) : Fail(result.msg);
+        }
     }
 }

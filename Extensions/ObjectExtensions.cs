@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Linq;
+using System.ComponentModel;
 
 namespace ducky_api_server.Extensions
 {
@@ -260,6 +261,32 @@ namespace ducky_api_server.Extensions
         {
             str = obj.SafeToString();
             return !obj.IsNull();
+        }
+
+        public static string ToJson(this object obj)
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+        }
+
+        public static T ToObject<T>(this string json)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+        }
+        public static string GetDescription(this Enum value, bool nameInstend = true)
+        {
+            Type type = value.GetType();
+            string name = Enum.GetName(type, value);
+            if (name == null)
+            {
+                return null;
+            }
+            FieldInfo field = type.GetField(name);
+            DescriptionAttribute attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+            if (attribute == null && nameInstend == true)
+            {
+                return name;
+            }
+            return attribute == null ? null : attribute.Description;
         }
     }
 }

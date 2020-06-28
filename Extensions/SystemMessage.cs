@@ -25,5 +25,13 @@ namespace ducky_api_server.Extensions
         /// 缺少关键参数
         /// </summary>
         public static string MissingKeyParameters = "缺少关键参数";
+        /// <summary>
+        /// 系统内部异常,未成功发送请求
+        /// </summary>
+        public static string SystemInnerErrorRequestSendFail = "系统内部异常,未成功发送请求";
+                /// <summary>
+        /// 未从系统中找到当前请求配置
+        /// </summary>
+        public static string SystemDoesNotHaveRequestConfig = "未从系统中找到当前请求配置";
     }
 }

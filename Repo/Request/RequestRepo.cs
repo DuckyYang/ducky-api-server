@@ -45,11 +45,10 @@ namespace ducky_api_server.Repo.Request
             return Db.Insert(model);
         }
 
-        public RequestDTO Get(string collectionId)
+        public RequestDTO Get(string id)
         {
-            return Db.GetSingle<RequestDTO>(x => x.ID == collectionId);
+            return Db.GetSingle<RequestDTO>(x => x.ID == id);
         }
-
         public bool UpdateRequestDocument(string id, RequestDTO dto)
         {
             var model = dto.Map<RequestModel>();

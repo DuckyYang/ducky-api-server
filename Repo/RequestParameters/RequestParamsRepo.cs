@@ -31,5 +31,9 @@ namespace ducky_api_server.Repo.RequestParameters
         {
             return Db.GetAll().OrderBy(x => x.InsertTime).MapList<RequestParametersDTO>();
         }
+        public List<RequestParametersDTO> Get(string requestId)
+        {
+            return Db.GetAll<RequestParametersDTO>(x => x.RequestID == requestId);
+        }
     }
 }

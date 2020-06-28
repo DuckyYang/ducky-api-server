@@ -32,5 +32,9 @@ namespace ducky_api_server.Repo.RequestHeaders
         {
             return Db.GetAll().OrderBy(x => x.InsertTime).MapList<RequestHeadersDTO>();
         }
+        public List<RequestHeadersDTO> Get(string requestId)
+        {
+            return Db.GetAll<RequestHeadersDTO>(x => x.RequestID == requestId);
+        }
     }
 }

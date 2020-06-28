@@ -117,5 +117,74 @@ namespace ducky_api_server.Service.Request
             }
             return repo.Rename(id,name);
         }
+
+        public (bool success,string msg) Send(string id)
+        {
+            if (id.IsEmpty())
+            {
+                return (false, SystemMessage.MissingKeyParameters);
+            }
+            var request = repo.Get(id);
+            if (!request.IsNull())
+            {
+                request.Headers = requestHeadersRepo.Get(request.ID);
+                request.Body =  requestBodyRepo.Get(request.ID);
+                request.Parameters =  requestParamsRepo.Get(request.ID);
+
+                bool isJson = request.ContentType == "json";
+                // 初始化http请求
+                var http = new Http(request.Address)
+                {
+                   ContentType = isJson ? HttpContentType.Json : HttpContentType.Form,
+                   Method = request.Method.ToUpper(),
+                };
+                // 设置请求头
+                foreach (var item in request.Headers)
+                {
+                    http.Headers.Add(item.Key,item.Value);
+                }
+                // 根据配置设置请求参数
+                switch (request.ContentType.ToLower())
+                {
+                    case "params":
+                        {
+                            var dic = new Dictionary<string,string>();
+                            request.Parameters.ForEach(x=>{
+                                dic.Add(x.Key,x.Value);
+                            });
+                            http.Parameters = dic;
+                        }
+                        break;
+                    case "json":
+                        {
+                            http.Body = request.Json;
+                        }
+                        break;
+                    case "form":
+                        {
+                            var dic = new Dictionary<string,string>();
+                            request.Body.ForEach(x=>{
+                                dic.Add(x.Key,x.Value);
+                            });
+                            http.Parameters = dic;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                // 
+                string response = string.Empty;
+                try
+                {
+                    response= http.BeginRequest();
+                    return (true,response);
+                }
+                catch (System.Exception ex)
+                {
+                    return (false, ex.Message);
+                }
+            }
+            return (false,SystemMessage.SystemDoesNotHaveRequestConfig);
+        }
     }
 }
