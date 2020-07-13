@@ -63,7 +63,15 @@ namespace ducky_api_server.Extensions
             {
                 return default;
             }
-            var to = type.Assembly.CreateInstance(type.FullName);
+             if (!type.FullName.Contains("AnonymousType"))
+            {
+                var to = type.Assembly.CreateInstance(type.FullName);
+                return MapProperties(from, to);
+            }
+            else
+            {
+                return new { };
+            }
 
             return MapProperties(from, to);
         }
